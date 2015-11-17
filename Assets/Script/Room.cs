@@ -38,11 +38,6 @@ public class Room : MonoBehaviour {
 		if (  prefabCase == null ) 
 			Debug.Log("Load Object Fail"); 
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void create()
     {

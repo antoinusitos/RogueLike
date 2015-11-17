@@ -15,16 +15,6 @@ public class Case : MonoBehaviour {
 
     public Type currentType;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 	public void SetPosition(float x, float y)
 	{
 		position = new Vector3 (x, 0, y);

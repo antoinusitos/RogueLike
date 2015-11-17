@@ -6,6 +6,7 @@ public class Shop : MonoBehaviour {
 	GameObject shopGUI;
 	public GameObject shopGUIPrefab;
 	bool opened = false;
+    Player player = null;
 
 	// Use this for initialization
 	void Start () 
@@ -20,7 +21,7 @@ public class Shop : MonoBehaviour {
 		{
 			if(Input.GetKeyDown(KeyCode.Alpha1))
 			{
-				Debug.Log("health given !");
+                player.AddLife(10);
 			}
 			if(Input.GetKeyDown(KeyCode.Alpha2))
 			{
@@ -34,6 +35,7 @@ public class Shop : MonoBehaviour {
 		if(other.transform.tag == "Player")
 		{
 			shopGUI = Instantiate(shopGUIPrefab);
+            player = other.transform.GetComponent<Player>();
 			opened = true;
 		}
 	}
@@ -43,6 +45,7 @@ public class Shop : MonoBehaviour {
 		if(other.transform.tag == "Player")
 		{
 			Destroy(shopGUI.gameObject);
+            player = null;
 			opened = false;
 		}
 	}
