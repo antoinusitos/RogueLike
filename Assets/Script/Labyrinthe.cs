@@ -12,7 +12,7 @@ public class Labyrinthe : MonoBehaviour {
 	GameObject fin;
 	GameObject player;
     int length = 7;
-	int roomLength = 5;
+	int roomLength = 13;
     GameObject StartRoom;
 	GameObject EndRoom;
 	List<GameObject> leaf;

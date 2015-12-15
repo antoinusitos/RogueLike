@@ -20,7 +20,8 @@ public class Room : MonoBehaviour {
     public bool isCorridor = true;
 
 	public GameObject[,] room;
-    public int length = 5;
+    int length = 13;
+    int corridorLarge = 7;
     public GameObject prefabCase;
 
     public List<int> directions;
@@ -34,6 +35,7 @@ public class Room : MonoBehaviour {
     void Awake ()
     {
         room = new GameObject[length, length];
+        Debug.Log(length);
 		prefabCase = Resources.Load ("Prefab/Cube") as GameObject;
 		if (  prefabCase == null ) 
 			Debug.Log("Load Object Fail"); 
@@ -141,13 +143,14 @@ public class Room : MonoBehaviour {
     void EmptyCorridor()
     {
         int half = (int)Mathf.Floor(length / 2) ;
-		//Debug.Log ("half:"+half);
+        int largHalf = (corridorLarge / 2) - 2;
+        //Debug.Log ("half:"+half);
 
-		if (top == 0)
+        if (top == 0)
 		{
-			for(int x = half - 1; x <= half + 1; ++x)
+			for(int x = half - largHalf; x <= half + largHalf; ++x)
 			{
-				for(int y = 0; y < 3 + (half - 1); ++y)
+				for(int y = 0; y < corridorLarge + (half - largHalf); ++y)
 				{
 					if(room [x,y].GetComponent<Case>().GetTypeCase() == 1)
 					{
@@ -159,9 +162,9 @@ public class Room : MonoBehaviour {
 
 		if (down == 0)
 		{
-			for (int x = half - 1; x <= half + 1; ++x)
+			for (int x = half - largHalf; x <= half + largHalf; ++x)
 			{
-				for (int y = half - 1; y <= length - 1; ++y)
+				for (int y = half - largHalf; y <= length - largHalf; ++y)
 				{
 					if (room[x, y].GetComponent<Case>().GetTypeCase() == 1)
 					{
@@ -173,9 +176,9 @@ public class Room : MonoBehaviour {
 
 		if (right == 0)
 		{
-			for (int x = half - 1; x <= length - 1; ++x)
+			for (int x = half - largHalf; x <= length - largHalf; ++x)
 			{
-				for (int y = half - 1; y <= half + 1; ++y)
+				for (int y = half - largHalf; y <= half + largHalf; ++y)
 				{
 					if (room[x, y].GetComponent<Case>().GetTypeCase() == 1)
 					{
@@ -187,9 +190,9 @@ public class Room : MonoBehaviour {
 
 		if (left == 0)
 		{
-			for (int x = 0; x < 3 + (half - 1); ++x)
+			for (int x = 0; x < corridorLarge + (half - largHalf); ++x)
 			{
-				for (int y = half - 1; y <= half + 1; ++y)
+				for (int y = half - largHalf; y <= half + largHalf; ++y)
 				{
 					if (room[x, y].GetComponent<Case>().GetTypeCase() == 1)
 					{

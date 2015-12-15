@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Gun : MonoBehaviour {
 
     public int currentAmmo;
-    public int maxAmmo = 240;
+    public int maxAmmo = 61;
     public int currentAmmoLoaded;
     public int maxAmmoLoaded = 30;
     public bool canShoot;
@@ -14,6 +14,10 @@ public class Gun : MonoBehaviour {
 
     public float reloadTime = 1.0f;
     public float fireRate = 0.1f;
+
+    public GameObject bullet;
+    public GameObject spawnBullet;
+    public GameObject spawnDouille;
 
     Text bulletIndicator;
     
@@ -44,16 +48,34 @@ public class Gun : MonoBehaviour {
         {
             StartCoroutine(Fire());
         }
-        Debug.Log(currentAmmoLoaded);
+
+        if (Input.GetMouseButton(0) && currentAmmoLoaded == 0 && !canShoot && canReload && currentAmmo > 0)
+        {
+            StopCoroutine(Fire());
+            StartCoroutine(Reload(currentAmmoLoaded));
+        }
+
+            Debug.Log(canShoot);
     }
 
     IEnumerator Reload(int currentAmmoInGun)
     {
         canShoot = false;
         canReload = false;
-        currentAmmo = currentAmmo - (maxAmmoLoaded - currentAmmoInGun);
         yield return new WaitForSeconds(reloadTime);
-        currentAmmoLoaded = maxAmmoLoaded;
+        Debug.Log(currentAmmo);
+        if((maxAmmoLoaded - currentAmmoInGun) > currentAmmo)
+        {
+            currentAmmoLoaded = currentAmmoInGun + currentAmmo;
+            currentAmmo = 0;
+        }
+        else
+        {
+            currentAmmo = currentAmmo - (maxAmmoLoaded - currentAmmoInGun);
+            currentAmmoLoaded = maxAmmoLoaded;
+        }
+        
+        
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
         canShoot = true;
         canReload = true;
@@ -62,17 +84,24 @@ public class Gun : MonoBehaviour {
     IEnumerator Fire()
     {
         canShoot = false;
-        yield return new WaitForSeconds(0.1f);
         currentAmmoLoaded--;
+        //Vector3 rotationVector = bullet.transform.rotation.eulerAngles;
+        //rotationVector.x = 90;
+        GameObject b = (GameObject)Instantiate(bullet, spawnBullet.transform.position, Quaternion.identity);
+        b.GetComponent<Bullet>().dir = transform.forward;
+        b.transform.LookAt(transform.forward);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
-        Debug.Log("Je tir");
+        Debug.Log(fireRate);
+        yield return new WaitForSeconds(fireRate);
         if (currentAmmoLoaded <= 0)
         {
             canShoot = false;
-        }else
+        }else if(currentAmmoLoaded > 0)
         {
             canShoot = true;
         }
-       
+        
+
+
     }
 }
