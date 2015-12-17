@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Bullet : MonoBehaviour {
-    public float speed = 32000.0f;
+    public float speed = 0.01f;
     public Vector3 dir;
 	// Use this for initialization
 	void Start () {
@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        transform.position += dir * speed ;
+       //transform.Translate(dir * speed);
     }
 
 

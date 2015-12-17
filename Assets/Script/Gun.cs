@@ -89,7 +89,7 @@ public class Gun : MonoBehaviour {
         //rotationVector.x = 90;
         GameObject b = (GameObject)Instantiate(bullet, spawnBullet.transform.position, Quaternion.identity);
         b.GetComponent<Bullet>().dir = transform.forward;
-        b.transform.LookAt(transform.forward);
+        b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
         Debug.Log(fireRate);
         yield return new WaitForSeconds(fireRate);
