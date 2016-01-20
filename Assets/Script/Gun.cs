@@ -55,7 +55,7 @@ public class Gun : MonoBehaviour {
             StartCoroutine(Reload(currentAmmoLoaded));
         }
 
-            Debug.Log(canShoot);
+          //  Debug.Log(canShoot);
     }
 
     IEnumerator Reload(int currentAmmoInGun)

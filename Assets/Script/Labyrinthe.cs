@@ -29,43 +29,8 @@ public class Labyrinthe : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-		/*leaf = new List<GameObject> ();
-        directions = new List<int>();
-        directions.Add(0);
-        directions.Add(1);
-        directions.Add(2);
-        directions.Add(3);
-        //labyrinthe = new Room[length, length];
-        labyrinthe = new GameObject[length, length];
-        xPointA = Random.Range(0, length-1);
-        yPointA = Random.Range(0, length-1);
-		StartRoom = Instantiate(prefabRoom, new Vector3(xPointA*roomLength,0,yPointA*roomLength), Quaternion.identity) as GameObject;
-        Room newRoom = StartRoom.GetComponent<Room>();
-		newRoom.position = new Vector3(xPointA*roomLength,0,yPointA*roomLength);
-        newRoom.xRoom = xPointA;
-        newRoom.yRoom = yPointA;
-        newRoom.id = count;
-        labyrinthe[newRoom.xRoom, newRoom.yRoom] = StartRoom;
-		count++;
-        RandomDir(StartRoom);
-
-        //Debug.Log("fin de la génération:" + count);
-
-		for(int i= 0; i< length; ++i)
-		{
-			for(int j= 0; j< length; ++j)
-			{
-				labyrinthe[i,j].GetComponent<Room>().create();
-			}
-		}
-
-		Instantiate (Player, new Vector3 (StartRoom.transform.position.x, StartRoom.transform.position.y+1, StartRoom.transform.position.z), Quaternion.identity);
-		int rand = Random.Range (0, leaf.Count);
-		EndRoom = leaf [rand];
-		Instantiate (TriggerFin, EndRoom.transform.position, Quaternion.identity);
-		leaf.RemoveAt (rand);*/
-
 		Generate ();
+        ShopManager.GetInstance().InitAllShop();
     }
 
 	public void Generate()
@@ -94,12 +59,13 @@ public class Labyrinthe : MonoBehaviour {
 		directions.Add(1);
 		directions.Add(2);
 		directions.Add(3);
-		//labyrinthe = new Room[length, length];
+
 		labyrinthe = new GameObject[length, length];
 		xPointA = Random.Range(0, length-1);
 		yPointA = Random.Range(0, length-1);
 		StartRoom = Instantiate(prefabRoom, new Vector3(xPointA*roomLength,0,yPointA*roomLength), Quaternion.identity) as GameObject;
-		Room newRoom = StartRoom.GetComponent<Room>();
+        StartRoom.transform.parent = transform;
+        Room newRoom = StartRoom.GetComponent<Room>();
 		newRoom.position = new Vector3(xPointA*roomLength,0,yPointA*roomLength);
 		newRoom.xRoom = xPointA;
 		newRoom.yRoom = yPointA;
@@ -126,7 +92,8 @@ public class Labyrinthe : MonoBehaviour {
 		int rand = Random.Range (0, leaf.Count);
 		EndRoom = leaf [rand];
 		fin = Instantiate (TriggerFin, EndRoom.transform.position, Quaternion.identity) as GameObject;
-		fin.GetComponent<EndLevel> ().parent = gameObject;
+        fin.transform.parent = transform;
+        fin.GetComponent<EndLevel> ().parent = gameObject;
 		leaf.RemoveAt (rand);
 
 		StartRoom.GetComponent<Room> ().PlaceBonus ();
@@ -176,6 +143,7 @@ public class Labyrinthe : MonoBehaviour {
             {
                 CurrentRoom.GetComponent<Room>().top = 0;
 				instanceNewRoom = Instantiate(prefabRoom, new Vector3(theCurrentRoom.xRoom*roomLength,0,(theCurrentRoom.yRoom - 1)*roomLength), Quaternion.identity) as GameObject;
+                instanceNewRoom.transform.parent = transform;
                 Room newRoom = instanceNewRoom.GetComponent<Room>();
 				newRoom.position = new Vector3(theCurrentRoom.transform.position.x,0,theCurrentRoom.transform.position.y);
                 newRoom.xRoom = theCurrentRoom.xRoom;
@@ -189,6 +157,7 @@ public class Labyrinthe : MonoBehaviour {
             {
                 CurrentRoom.GetComponent<Room>().down = 0;
 				instanceNewRoom = Instantiate(prefabRoom, new Vector3(theCurrentRoom.xRoom*roomLength,0,(theCurrentRoom.yRoom + 1)*roomLength), Quaternion.identity) as GameObject;
+                instanceNewRoom.transform.parent = transform;
                 Room newRoom = instanceNewRoom.GetComponent<Room>();
 				newRoom.position = new Vector3(theCurrentRoom.transform.position.x,0,theCurrentRoom.transform.position.y);
                 newRoom.xRoom = theCurrentRoom.xRoom;
@@ -202,6 +171,7 @@ public class Labyrinthe : MonoBehaviour {
             {
                 CurrentRoom.GetComponent<Room>().left = 0;
 				instanceNewRoom = Instantiate(prefabRoom, new Vector3((theCurrentRoom.xRoom - 1)*roomLength,0,theCurrentRoom.yRoom*roomLength), Quaternion.identity) as GameObject;
+                instanceNewRoom.transform.parent = transform;
                 Room newRoom = instanceNewRoom.GetComponent<Room>();
 				newRoom.position = new Vector3(theCurrentRoom.transform.position.x,0,theCurrentRoom.transform.position.y);
                 newRoom.xRoom = theCurrentRoom.xRoom - 1;
@@ -215,6 +185,7 @@ public class Labyrinthe : MonoBehaviour {
             {
                 CurrentRoom.GetComponent<Room>().right = 0;
 				instanceNewRoom = Instantiate(prefabRoom, new Vector3((theCurrentRoom.xRoom + 1)*roomLength,0,theCurrentRoom.yRoom*roomLength), Quaternion.identity) as GameObject;
+                instanceNewRoom.transform.parent = transform;
                 Room newRoom = instanceNewRoom.GetComponent<Room>();
 				newRoom.position = new Vector3(theCurrentRoom.transform.position.x,0,theCurrentRoom.transform.position.y);
                 newRoom.xRoom = theCurrentRoom.xRoom + 1;

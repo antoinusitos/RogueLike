@@ -35,7 +35,7 @@ public class Room : MonoBehaviour {
     void Awake ()
     {
         room = new GameObject[length, length];
-        Debug.Log(length);
+       // Debug.Log(length);
 		prefabCase = Resources.Load ("Prefab/Cube") as GameObject;
 		if (  prefabCase == null ) 
 			Debug.Log("Load Object Fail"); 
@@ -231,6 +231,7 @@ public class Room : MonoBehaviour {
 		}
 
 		Shop = Instantiate(ShopPrefab, new Vector3(transform.position.x+caseX-2, transform.position.y, transform.position.z+caseY-2), Quaternion.identity) as GameObject;
+        ShopManager.GetInstance().AddShop(Shop);
 	}
 
 	public void RemoveBonus()
