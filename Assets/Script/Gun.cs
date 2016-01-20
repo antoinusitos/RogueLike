@@ -12,8 +12,9 @@ public class Gun : MonoBehaviour {
     public bool canShoot;
     public bool canReload;
 
-    public float reloadTime = 1.0f;
-    public float fireRate = 0.1f;
+    public float reloadTime;
+    public float fireRate;
+    public float range;
 
     public GameObject bullet;
     public GameObject spawnBullet;
@@ -55,7 +56,6 @@ public class Gun : MonoBehaviour {
             StartCoroutine(Reload(currentAmmoLoaded));
         }
 
-            Debug.Log(canShoot);
     }
 
     IEnumerator Reload(int currentAmmoInGun)
@@ -63,7 +63,6 @@ public class Gun : MonoBehaviour {
         canShoot = false;
         canReload = false;
         yield return new WaitForSeconds(reloadTime);
-        Debug.Log(currentAmmo);
         if((maxAmmoLoaded - currentAmmoInGun) > currentAmmo)
         {
             currentAmmoLoaded = currentAmmoInGun + currentAmmo;
@@ -85,13 +84,16 @@ public class Gun : MonoBehaviour {
     {
         canShoot = false;
         currentAmmoLoaded--;
-        //Vector3 rotationVector = bullet.transform.rotation.eulerAngles;
-        //rotationVector.x = 90;
         GameObject b = (GameObject)Instantiate(bullet, spawnBullet.transform.position, Quaternion.identity);
         b.GetComponent<Bullet>().dir = transform.forward;
-        b.transform.LookAt(Camera.main.transform);
+        //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
-        Debug.Log(fireRate);
+
+        if (Physics.Raycast(spawnBullet.transform.position, transform.forward, range))
+        {
+            Debug.Log("hit");
+        }
+
         yield return new WaitForSeconds(fireRate);
         if (currentAmmoLoaded <= 0)
         {

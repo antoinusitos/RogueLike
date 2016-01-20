@@ -35,7 +35,7 @@ public class Room : MonoBehaviour {
     void Awake ()
     {
         room = new GameObject[length, length];
-        Debug.Log(length);
+
 		prefabCase = Resources.Load ("Prefab/Cube") as GameObject;
 		if (  prefabCase == null ) 
 			Debug.Log("Load Object Fail"); 
