@@ -136,7 +136,7 @@ public class Labyrinthe : MonoBehaviour {
 		for (int i = 0; i < (leaf.Count/2)+increment; ++i)
 		{
 			leaf[i].GetComponent<Room>().PlaceBonus();
-		}
+        }
 	}
 
     void RandomDir(GameObject CurrentRoom)

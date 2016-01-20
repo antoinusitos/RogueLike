@@ -27,6 +27,8 @@ public class Room : MonoBehaviour {
     public List<int> directions;
 
 	public GameObject ShopPrefab;
+    public GameObject EnnemyPrefab;
+    GameObject Ennemy;
 	GameObject Shop;
 
     public int id;
@@ -233,7 +235,37 @@ public class Room : MonoBehaviour {
 		Shop = Instantiate(ShopPrefab, new Vector3(transform.position.x+caseX-2, transform.position.y, transform.position.z+caseY-2), Quaternion.identity) as GameObject;
 	}
 
-	public void RemoveBonus()
+    public void PlaceEnnemy(int nbMaxOfEnnemy)
+    {
+        int caseX = 0;
+        int caseY = 0;
+        int rand = Random.Range(0, nbMaxOfEnnemy);
+
+        if (rand == 0)
+        {
+            caseX = 1;
+            caseY = 1;
+        }
+        else if (rand == 1)
+        {
+            caseX = 3;
+            caseY = 1;
+        }
+        else if (rand == 2)
+        {
+            caseX = 1;
+            caseY = 3;
+        }
+        else if (rand == 3)
+        {
+            caseX = 3;
+            caseY = 3;
+        }
+
+        Ennemy = Instantiate(EnnemyPrefab, new Vector3(transform.position.x + caseX - 2, transform.position.y, transform.position.z + caseY - 2), Quaternion.identity) as GameObject;
+    }
+
+    public void RemoveBonus()
 	{
 		if(Shop != null)
 		{
