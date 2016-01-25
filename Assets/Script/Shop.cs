@@ -112,6 +112,7 @@ public class Shop : MonoBehaviour {
     {
         ShopCanvas s = shopGUI.transform.GetChild(0).transform.GetComponent<ShopCanvas>();
         s.text1.GetComponent<Text>().text = "1 - Refill Life ("+refillLifeAmount+")";
+        Debug.Log(content[0].toString());
         s.text2.GetComponent<Text>().text = "2 - Upgrade " + content[0].GetTypeUpgrade() + " (" + content[0].GetCost() + ")";
         s.text3.GetComponent<Text>().text = "3 - Upgrade " + content[1].GetTypeUpgrade() + " (" + content[1].GetCost() + ")";
         s.text4.GetComponent<Text>().text = "4 - Upgrade " + content[2].GetTypeUpgrade() + " (" + content[2].GetCost() + ")";

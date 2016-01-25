@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 
 public class Gun : MonoBehaviour {
-
+    RaycastHit hit;
     public int currentAmmo;
     public int maxAmmo = 61;
     public int currentAmmoLoaded;
@@ -12,8 +12,10 @@ public class Gun : MonoBehaviour {
     public bool canShoot;
     public bool canReload;
 
-    public float reloadTime = 1.0f;
-    public float fireRate = 0.1f;
+    public float reloadTime;
+    public float fireRate;
+    public float range;
+    public float damage;
 
     public GameObject bullet;
     public GameObject spawnBullet;
@@ -27,6 +29,7 @@ public class Gun : MonoBehaviour {
 	void Start () {
         currentAmmoLoaded = maxAmmoLoaded;
         currentAmmo = maxAmmo;
+
 	    if(currentAmmoLoaded > 0)
         {
             canShoot = true;
@@ -55,7 +58,11 @@ public class Gun : MonoBehaviour {
             StartCoroutine(Reload(currentAmmoLoaded));
         }
 
-          //  Debug.Log(canShoot);
+    }
+
+    public void SetCanShoot(bool state)
+    {
+        canShoot = state;
     }
 
     IEnumerator Reload(int currentAmmoInGun)
@@ -63,7 +70,6 @@ public class Gun : MonoBehaviour {
         canShoot = false;
         canReload = false;
         yield return new WaitForSeconds(reloadTime);
-        Debug.Log(currentAmmo);
         if((maxAmmoLoaded - currentAmmoInGun) > currentAmmo)
         {
             currentAmmoLoaded = currentAmmoInGun + currentAmmo;
@@ -85,26 +91,23 @@ public class Gun : MonoBehaviour {
     {
         canShoot = false;
         currentAmmoLoaded--;
-        //Vector3 rotationVector = bullet.transform.rotation.eulerAngles;
-        //rotationVector.x = 90;
         GameObject b = (GameObject)Instantiate(bullet, spawnBullet.transform.position, Quaternion.identity);
-        b.GetComponent<Bullet>().dir = transform.forward;
-        b.transform.LookAt(Camera.main.transform);
+        b.GetComponent<Bullet>().dir = Camera.main.transform.forward;
+        //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
-        Debug.Log(fireRate);
+        if (Physics.Raycast(spawnBullet.transform.position, Camera.main.transform.forward, out hit, range) && hit.collider.tag == "Enemy")
+        {
+            Debug.Log("Touche");
+           hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
+        }
+
         yield return new WaitForSeconds(fireRate);
         if (currentAmmoLoaded <= 0)
         {
             canShoot = false;
-        }
-        else if(currentAmmoLoaded > 0)
+        }else if(currentAmmoLoaded > 0)
         {
             canShoot = true;
         }
-    }
-
-    public void SetCanShoot(bool state)
-    {
-        canShoot = state;
     }
 }

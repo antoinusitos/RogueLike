@@ -27,6 +27,8 @@ public class Room : MonoBehaviour {
     public List<int> directions;
 
 	public GameObject ShopPrefab;
+    public GameObject EnnemyPrefab;
+    GameObject Ennemy;
 	GameObject Shop;
 
     public int id;
@@ -35,7 +37,7 @@ public class Room : MonoBehaviour {
     void Awake ()
     {
         room = new GameObject[length, length];
-       // Debug.Log(length);
+
 		prefabCase = Resources.Load ("Prefab/Cube") as GameObject;
 		if (  prefabCase == null ) 
 			Debug.Log("Load Object Fail"); 
@@ -131,13 +133,28 @@ public class Room : MonoBehaviour {
             EmptyCorridor();
         }
 
+        GameObject[] tab = new GameObject[length * length];
+        int index = 0;
+
 		for (int x = 0; x < length; ++x)
 		{
 			for (int y = 0; y < length; ++y)
 			{
 				room[x, y].GetComponent<Case>().Construct();
-			}
+                
+            }
 		}
+
+        for (int x = 2; x < length-2; ++x)
+        {
+            for (int y = 2; y < length-2; ++y)
+            {
+                tab[index] = room[x, y];
+                index++;
+            }
+        }
+
+        EnemyManager.GetInstance().SpawnEnemy(tab);
     }
 
     void EmptyCorridor()
@@ -234,7 +251,37 @@ public class Room : MonoBehaviour {
         ShopManager.GetInstance().AddShop(Shop);
 	}
 
-	public void RemoveBonus()
+    public void PlaceEnnemy(int nbMaxOfEnnemy)
+    {
+        int caseX = 0;
+        int caseY = 0;
+        int rand = Random.Range(0, nbMaxOfEnnemy);
+
+        if (rand == 0)
+        {
+            caseX = 1;
+            caseY = 1;
+        }
+        else if (rand == 1)
+        {
+            caseX = 3;
+            caseY = 1;
+        }
+        else if (rand == 2)
+        {
+            caseX = 1;
+            caseY = 3;
+        }
+        else if (rand == 3)
+        {
+            caseX = 3;
+            caseY = 3;
+        }
+
+        Ennemy = Instantiate(EnnemyPrefab, new Vector3(transform.position.x + caseX - 2, transform.position.y, transform.position.z + caseY - 2), Quaternion.identity) as GameObject;
+    }
+
+    public void RemoveBonus()
 	{
 		if(Shop != null)
 		{
