@@ -32,12 +32,25 @@ public class StatPlayer : MonoBehaviour {
 
         LevelStamina = 0;
         LevelLife = 0;
-}
+
+        RefreshUI();
+    }
+
+    public void RefreshUI()
+    {
+        UIManager.GetInstance().SetUIText(UIManager.GetInstance().moneyText, "money : " + money);
+    }
 
     public void RemoveMoney(int amount)
     {
-        if (money - amount > 0)
+        if (money - amount >= 0)
             money -= amount;
+        RefreshUI();
+    }
+
+    public int GetMoney()
+    {
+        return money;
     }
 
     public void AddXP(float amount)
@@ -51,5 +64,47 @@ public class StatPlayer : MonoBehaviour {
             level++;
             experience = much;
         }
+    }
+
+    public void AddStatLife(int value)
+    {
+        LevelLife++;
+        GetComponent<Player>().AddMaxLife(value);
+    }
+
+    public void AddStatStamina(int value)
+    {
+        LevelStamina++;
+        GetComponent<DeplacementPlayer>().AddMaxStamina(value);
+    }
+
+    public void AddStatDamage(int value)
+    {
+        LevelDamage++;
+        // TODO : changer les degats
+    }
+
+    public void AddStatReload(int value)
+    {
+        LevelReload++;
+        // TODO : augmenter vitesse de reload
+    }
+
+    public void AddStatCadence(int value)
+    {
+        LevelCadence++;
+        // TODO : augmenter la cadence
+    }
+
+    public void AddStatAmmo(int value)
+    {
+        LevelAmmo++;
+        // TODO : augmenter les ammo
+    }
+
+    public void AddStatAim(int value)
+    {
+        LevelAim++;
+        // TODO : augmenter la precision
     }
 }

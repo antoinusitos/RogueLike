@@ -3,7 +3,17 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
+    // TODO : enlever le debug
+    public bool Debug = true;
+
+
+    public GameObject gun;
+    public GameObject cameraPlayer;
+
     public int life;
+    public int maxLife;
+
+    public bool showingStats;
 
     public enum State
     {
@@ -17,8 +27,16 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-        life = 90;
+        showingStats = false;
+        maxLife = 100;
+        life = maxLife;
         currentState = State.alive;
+        RefreshUI();
+    }
+
+    public bool NeedHeal()
+    {
+        return life == maxLife ? false : true;
     }
 
     void Update()
@@ -34,17 +52,38 @@ public class Player : MonoBehaviour {
                     if (currentState == State.menu)
                     {
                         currentState = State.alive;
-
+                        cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(false);
+                        gun.GetComponent<Gun>().SetCanShoot(true);
                         hit.transform.gameObject.GetComponent<Shop>().HideUI();
                     }
                     else
                     {
                         currentState = State.menu;
-
+                        cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(true);
+                        gun.GetComponent<Gun>().SetCanShoot(false);
                         hit.transform.gameObject.GetComponent<Shop>().ShowUI(gameObject);
                     }
                 }
             }               
+        }
+
+        if (Input.GetButtonDown("Stats"))
+        {
+            if(showingStats)
+            {
+                showingStats = false;
+                currentState = State.alive;
+                UIManager.GetInstance().ShowStats(false);
+                cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(false);
+            }
+            else
+            {
+                showingStats = true;
+                currentState = State.menu;
+                UIManager.GetInstance().ShowStats(true);
+                cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(true);
+                PanelStats.GetInstance().UpdateStats(gameObject);
+            }
         }
 
         if (currentState == State.menu || currentState == State.dead)
@@ -57,6 +96,27 @@ public class Player : MonoBehaviour {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+
+        if (Debug)
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (currentState == State.menu)
+                {
+                    currentState = State.alive;
+                    cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(false);
+                }
+                else
+                {
+                    currentState = State.menu;
+                    cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(true);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                TakeDamage(20);
+            }
+        }
     }
 	
     public State GetState()
@@ -66,14 +126,15 @@ public class Player : MonoBehaviour {
 
     public void AddLife(int adding)
     {
-        if (life < 100)
+        if (life < maxLife)
         {
             life += adding;
-            if (life > 100)
+            if (life > maxLife)
             {
-                life = 100;
+                life = maxLife;
             }
         }
+        RefreshUI();
     }
 
     public void TakeDamage(int amount)
@@ -83,5 +144,18 @@ public class Player : MonoBehaviour {
         {
             life = 0;
         }
+        RefreshUI();
+    }
+
+    public void RefreshUI()
+    {
+        UIManager.GetInstance().SetUIText(UIManager.GetInstance().lifeText, life + " / " + maxLife);
+        UIManager.GetInstance().SetUIBar(UIManager.GetInstance().lifeBar, (float)life, (float)  maxLife);
+    }
+
+    public void AddMaxLife(int value)
+    {
+        maxLife += value;
+        RefreshUI();
     }
 }

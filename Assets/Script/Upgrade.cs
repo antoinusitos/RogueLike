@@ -59,4 +59,21 @@ public class Upgrade {
     {
         return value;
     }
+
+    public void Apply(GameObject p)
+    {
+        p.GetComponent<StatPlayer>().RemoveMoney(cost);
+        if (currentType == type.life)
+        {
+            p.GetComponent<StatPlayer>().AddStatLife(value);
+        }
+        else if (currentType == type.stamina)
+        {
+            p.GetComponent<StatPlayer>().AddStatStamina(value);
+        }
+        else if (currentType == type.damage)
+        {
+            p.GetComponent<StatPlayer>().AddStatStamina(value);
+        }
+    }
 }

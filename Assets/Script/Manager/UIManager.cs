@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject canvasGame;
-    public GameObject canvasMainMenu;
+    //public GameObject canvasMainMenu;
     public GameObject canvasOptions;
     public GameObject canvasCredits;
     public GameObject canvasGameOver;
     public GameObject CanvasPause;
-    public GameObject canvasSplash;
+    //public GameObject canvasSplash;
 
+    public GameObject tabInfo;
+
+    public GameObject moneyText;
+    public GameObject lifeText;
+    public GameObject staminaText;
+    public GameObject lifeBar;
+    public GameObject staminaBar;
 
     private static UIManager instance = null;
-
-    
 
     public static UIManager GetInstance()
     {
@@ -33,11 +39,26 @@ public class UIManager : MonoBehaviour
         canvasGame.SetActive(true);
     }
 
-    public void ShowCanvasMenu()
+    public void SetUIText(GameObject theText, string t)
     {
-        HideAll();
-        canvasMainMenu.SetActive(true);
+        theText.GetComponent<Text>().text = t;
     }
+
+    public void ShowStats(bool state)
+    {
+        tabInfo.SetActive(state);
+    }
+
+    public void SetUIBar(GameObject theBar, float v1, float v2)
+    {
+        theBar.GetComponent<Slider>().value = v1 / v2;
+    }
+
+    /* public void ShowCanvasMenu()
+     {
+         HideAll();
+         canvasMainMenu.SetActive(true);
+     }*/
 
     public void ShowCanvasOptions()
     {
@@ -45,11 +66,11 @@ public class UIManager : MonoBehaviour
         canvasOptions.SetActive(true);
     }
 
-    public void ShowCanvasSplash()
+   /* public void ShowCanvasSplash()
     {
         HideAll();
         canvasSplash.SetActive(true);
-    }
+    }*/
 
     public void ShowCanvasCredits()
     {
@@ -74,9 +95,9 @@ public class UIManager : MonoBehaviour
         CanvasPause.SetActive(false);
         canvasGameOver.SetActive(false);
         canvasCredits.SetActive(false);
-        canvasSplash.SetActive(false);
+        //canvasSplash.SetActive(false);
         canvasOptions.SetActive(false);
-        canvasMainMenu.SetActive(false);
+        //canvasMainMenu.SetActive(false);
         canvasGame.SetActive(false);
     }
 }

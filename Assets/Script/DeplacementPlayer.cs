@@ -62,6 +62,8 @@ public class DeplacementPlayer : MonoBehaviour
         }
         else if (GetComponent<Player>().GetState() == Player.State.menu)
         {
+            AddStamina();
+            multiply = 1.0f;
             moveDirection = new Vector3(0, 0, 0);
             moveDirection = transform.TransformDirection(moveDirection);
             moveDirection *= speed * multiply;
@@ -78,6 +80,7 @@ public class DeplacementPlayer : MonoBehaviour
         {
             stamina = staminaMax;
         }
+        RefreshUI();
     }
 
     void RemoveStamina(float amount = 0)
@@ -91,5 +94,19 @@ public class DeplacementPlayer : MonoBehaviour
         {
             stamina = 0;
         }
+
+        RefreshUI();
+    }
+
+    public void RefreshUI()
+    {
+        UIManager.GetInstance().SetUIText(UIManager.GetInstance().staminaText, Mathf.Round(stamina * 100f) / 100f + " / " + staminaMax);
+        UIManager.GetInstance().SetUIBar(UIManager.GetInstance().staminaBar, stamina, staminaMax);
+    }
+
+    public void AddMaxStamina(int value)
+    {
+        staminaMax += value;
+        RefreshUI();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,9 +9,17 @@ public class Shop : MonoBehaviour {
 	public GameObject shopGUIPrefab;
 	bool opened = false;
     GameObject player = null;
+    public int refillLifeCost;
+    public int refillLifeAmount;
 
     Upgrade[] content;
 	
+    void Start()
+    {
+        refillLifeCost = 20;
+        refillLifeAmount = 30;
+    }
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -18,19 +27,44 @@ public class Shop : MonoBehaviour {
 		{
 			if(Input.GetKeyDown(KeyCode.Alpha1))
 			{
-                player.GetComponent<Player>().AddLife(10);
-                player.GetComponent<StatPlayer>().RemoveMoney(50);
+                if (player.GetComponent<Player>().NeedHeal() && player.GetComponent<StatPlayer>().GetMoney() >= refillLifeCost)
+                {
+                    player.GetComponent<Player>().AddLife(refillLifeAmount);
+                    player.GetComponent<StatPlayer>().RemoveMoney(refillLifeCost);
+                }
             }
-			if(Input.GetKeyDown(KeyCode.Alpha2))
+			if(Input.GetKeyDown(KeyCode.Alpha2) && player.GetComponent<StatPlayer>().GetMoney() >= content[0].GetCost())
 			{
-				Debug.Log("amelioration bought !");
-			}
-		}
+                Debug.Log(content[0].toString());
+                content[0].Apply(player);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) && player.GetComponent<StatPlayer>().GetMoney() >= content[1].GetCost())
+            {
+                Debug.Log(content[1].toString());
+                content[1].Apply(player);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) && player.GetComponent<StatPlayer>().GetMoney() >= content[2].GetCost())
+            {
+                Debug.Log(content[2].toString());
+                content[2].Apply(player);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) && player.GetComponent<StatPlayer>().GetMoney() >= content[3].GetCost())
+            {
+                Debug.Log(content[3].toString());
+                content[3].Apply(player);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) && player.GetComponent<StatPlayer>().GetMoney() >= content[4].GetCost())
+            {
+                Debug.Log(content[4].toString());
+                content[4].Apply(player);
+            }
+        }
 	}
 
     public void ShowUI(GameObject p)
     {
         shopGUI = Instantiate(shopGUIPrefab);
+        RefreshUI();
         player = p;
         opened = true;
     }
@@ -64,7 +98,7 @@ public class Shop : MonoBehaviour {
                 rands[i] = rand;
 
                 content[i] = upgrades[rand];
-                Debug.Log("it:" + i + content[i].toString());
+                //Debug.Log("it:" + i + content[i].toString());
             }
 
         }
@@ -72,6 +106,17 @@ public class Shop : MonoBehaviour {
         {
             Debug.Log("ERREUR : PAS ASSEZ D'UPGRADE POUR INITIALISER LES SHOP");
         }
+    }
+
+    void RefreshUI()
+    {
+        ShopCanvas s = shopGUI.transform.GetChild(0).transform.GetComponent<ShopCanvas>();
+        s.text1.GetComponent<Text>().text = "1 - Refill Life ("+refillLifeAmount+")";
+        s.text2.GetComponent<Text>().text = "2 - Upgrade " + content[0].GetTypeUpgrade() + " (" + content[0].GetCost() + ")";
+        s.text3.GetComponent<Text>().text = "3 - Upgrade " + content[1].GetTypeUpgrade() + " (" + content[1].GetCost() + ")";
+        s.text4.GetComponent<Text>().text = "4 - Upgrade " + content[2].GetTypeUpgrade() + " (" + content[2].GetCost() + ")";
+        s.text5.GetComponent<Text>().text = "5 - Upgrade " + content[3].GetTypeUpgrade() + " (" + content[3].GetCost() + ")";
+        s.text6.GetComponent<Text>().text = "6 - Upgrade " + content[4].GetTypeUpgrade() + " (" + content[4].GetCost() + ")";
     }
 
     public void HideUI()

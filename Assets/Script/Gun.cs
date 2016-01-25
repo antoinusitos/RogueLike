@@ -96,12 +96,15 @@ public class Gun : MonoBehaviour {
         if (currentAmmoLoaded <= 0)
         {
             canShoot = false;
-        }else if(currentAmmoLoaded > 0)
+        }
+        else if(currentAmmoLoaded > 0)
         {
             canShoot = true;
         }
-        
+    }
 
-
+    public void SetCanShoot(bool state)
+    {
+        canShoot = state;
     }
 }
