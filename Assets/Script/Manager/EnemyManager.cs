@@ -27,6 +27,7 @@ public class EnemyManager : MonoBehaviour {
             if (tab[rand] != null)
             {
                 Instantiate(enemy, tab[rand].transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+
             }
             else
             {
