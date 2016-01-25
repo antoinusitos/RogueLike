@@ -88,7 +88,6 @@ public class Gun : MonoBehaviour {
         b.GetComponent<Bullet>().dir = transform.forward;
         //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
-
         if (Physics.Raycast(spawnBullet.transform.position, transform.forward, range))
         {
             Debug.Log("hit");
