@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 
 public class Gun : MonoBehaviour {
-
+    RaycastHit hit;
     public int currentAmmo;
     public int maxAmmo = 61;
     public int currentAmmoLoaded;
@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour {
     public float reloadTime;
     public float fireRate;
     public float range;
+    public float damage;
 
     public GameObject bullet;
     public GameObject spawnBullet;
@@ -28,6 +29,7 @@ public class Gun : MonoBehaviour {
 	void Start () {
         currentAmmoLoaded = maxAmmoLoaded;
         currentAmmo = maxAmmo;
+
 	    if(currentAmmoLoaded > 0)
         {
             canShoot = true;
@@ -88,9 +90,10 @@ public class Gun : MonoBehaviour {
         b.GetComponent<Bullet>().dir = transform.forward;
         //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
-        if (Physics.Raycast(spawnBullet.transform.position, transform.forward, range))
+        if (Physics.Raycast(spawnBullet.transform.position, transform.forward, out hit, range) && hit.collider.tag == "Enemy")
         {
-            Debug.Log("hit");
+           
+           hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
         }
 
         yield return new WaitForSeconds(fireRate);
