@@ -8,7 +8,6 @@ public class Upgrade {
         damage,
         cadence,
         reload,
-        aim,
         ammo,
         stamina,
         life
@@ -74,6 +73,18 @@ public class Upgrade {
         else if (currentType == type.damage)
         {
             p.GetComponent<StatPlayer>().AddStatStamina(value);
+        }
+        else if (currentType == type.cadence)
+        {
+            p.GetComponent<StatPlayer>().AddStatCadence();
+        }
+        else if (currentType == type.ammo)
+        {
+            p.GetComponent<StatPlayer>().AddStatAmmo();
+        }
+        else if (currentType == type.reload)
+        {
+            p.GetComponent<StatPlayer>().AddStatReload();
         }
     }
 }

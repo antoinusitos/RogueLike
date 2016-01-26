@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
         Playing
     };
 
+    public GameObject player;
+
     gameState currentGamestate;
 
     public static GameManager GetInstance()
@@ -26,7 +28,12 @@ public class GameManager : MonoBehaviour {
         instance = this;
         DontDestroyOnLoad(gameObject);
         currentGamestate = gameState.SplashScreen;
-        StartCoroutine(LoadMenu());
+        //StartCoroutine(LoadMenu());
+    }
+
+    public void SetPlayer(GameObject p )
+    {
+        player = p;
     }
 
     public void Quit()

@@ -31,6 +31,8 @@ public class Room : MonoBehaviour {
     GameObject Ennemy;
 	GameObject Shop;
 
+    public bool isImportant;
+
     public int id;
 
     // Use this for initialization
@@ -41,6 +43,11 @@ public class Room : MonoBehaviour {
 		prefabCase = Resources.Load ("Prefab/Cube") as GameObject;
 		if (  prefabCase == null ) 
 			Debug.Log("Load Object Fail"); 
+    }
+
+    public GameObject GetHalf()
+    {
+        return room[length / 2, length / 2];
     }
 
     public void create()
@@ -153,8 +160,9 @@ public class Room : MonoBehaviour {
                 index++;
             }
         }
-
-        EnemyManager.GetInstance().SpawnEnemy(tab);
+        
+        if(!isImportant)
+            EnemyManager.GetInstance().SpawnEnemy(tab);
     }
 
     void EmptyCorridor()

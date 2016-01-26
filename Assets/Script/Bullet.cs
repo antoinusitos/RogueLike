@@ -5,10 +5,12 @@ public class Bullet : MonoBehaviour {
     public float speed = 0.01f;
     public Vector3 dir;
     public float delayToDestroy;
-	// Use this for initialization
-	void Start () {
-    }
 	
+    void Start()
+    {
+        delayToDestroy = 5.0f;
+    }
+
 	// Update is called once per frame
 	void Update ()
     {
@@ -16,6 +18,5 @@ public class Bullet : MonoBehaviour {
         Destroy(gameObject, delayToDestroy);
         
     }
-
 
 }

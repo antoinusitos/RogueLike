@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     public GameObject staminaText;
     public GameObject lifeBar;
     public GameObject staminaBar;
+    public GameObject reloadBar;
 
     private static UIManager instance = null;
 

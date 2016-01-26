@@ -17,6 +17,10 @@ public class StatPlayer : MonoBehaviour {
     public int LevelStamina = 0;
     public int LevelLife = 0;
 
+    public float upgradeReload;
+    public float upgradeCadence;
+    public int upgradeAmmo;
+
     void Start()
     {
         money = 100;
@@ -33,6 +37,10 @@ public class StatPlayer : MonoBehaviour {
         LevelStamina = 0;
         LevelLife = 0;
 
+        upgradeAmmo = 5;
+        upgradeReload = 0.05f;
+        upgradeCadence = 0.05f;
+
         RefreshUI();
     }
 
@@ -48,6 +56,12 @@ public class StatPlayer : MonoBehaviour {
         RefreshUI();
     }
 
+    public void AddMoney(int amount)
+    {
+        money += amount;
+        RefreshUI();
+    }
+
     public int GetMoney()
     {
         return money;
@@ -59,7 +73,7 @@ public class StatPlayer : MonoBehaviour {
             experience += amount;
         else
         {
-            float much = experienceToNextLevel - amount;
+            float much = experienceToNextLevel - experience + amount;
             experienceToNextLevel = 100.0f;
             level++;
             experience = much;
@@ -81,30 +95,24 @@ public class StatPlayer : MonoBehaviour {
     public void AddStatDamage(int value)
     {
         LevelDamage++;
-        // TODO : changer les degats
+        GetComponent<Player>().gun.GetComponent<Gun>().damage += value;
     }
 
-    public void AddStatReload(int value)
+    public void AddStatReload()
     {
         LevelReload++;
-        // TODO : augmenter vitesse de reload
+        GetComponent<Player>().gun.GetComponent<Gun>().reloadTime -= upgradeReload;
     }
 
-    public void AddStatCadence(int value)
+    public void AddStatCadence()
     {
         LevelCadence++;
-        // TODO : augmenter la cadence
+        GetComponent<Player>().gun.GetComponent<Gun>().fireRate -= upgradeCadence;
     }
 
-    public void AddStatAmmo(int value)
+    public void AddStatAmmo()
     {
         LevelAmmo++;
-        // TODO : augmenter les ammo
-    }
-
-    public void AddStatAim(int value)
-    {
-        LevelAim++;
-        // TODO : augmenter la precision
+        GetComponent<Player>().gun.GetComponent<Gun>().maxAmmoLoaded += upgradeAmmo;
     }
 }

@@ -11,7 +11,6 @@ public class PanelStats : MonoBehaviour {
     public GameObject ammoLevel;
     public GameObject candenceLevel;
     public GameObject reloadLevel;
-    public GameObject aimLevel;
 
     public GameObject currentLife;
     public GameObject currentLifeMax;
@@ -22,7 +21,6 @@ public class PanelStats : MonoBehaviour {
     public GameObject currentAmmoMax;
     public GameObject currentCandence;
     public GameObject currentReload;
-    public GameObject currentAim;
     public GameObject currentMoney;
     public GameObject currentExp;
     public GameObject currentExpMax;
@@ -50,20 +48,18 @@ public class PanelStats : MonoBehaviour {
         ammoLevel.GetComponent<Text>().text = p.LevelAmmo.ToString();
         candenceLevel.GetComponent<Text>().text = p.LevelCadence.ToString();
         reloadLevel.GetComponent<Text>().text = p.LevelReload.ToString();
-        aimLevel.GetComponent<Text>().text = p.LevelAim.ToString();
 
         currentLife.GetComponent<Text>().text = player.GetComponent<Player>().life.ToString();
         currentLifeMax.GetComponent<Text>().text = player.GetComponent<Player>().maxLife.ToString();
         currentStamina.GetComponent<Text>().text = (Mathf.Round(player.GetComponent<DeplacementPlayer>().stamina * 100f) / 100f).ToString();
         currentStaminaMax.GetComponent<Text>().text = player.GetComponent<DeplacementPlayer>().staminaMax.ToString();
-        currentDamage.GetComponent<Text>().text = "value";//p.LevelDamage.ToString();
-        currentAim.GetComponent<Text>().text = "value";//p.LevelDamage.ToString();
-        currentAmmo.GetComponent<Text>().text = player.GetComponent<Player>().gun.GetComponent<Gun>().currentAmmo.ToString();
+        currentDamage.GetComponent<Text>().text = player.GetComponent<Player>().gun.GetComponent<Gun>().damage.ToString();
+        currentAmmo.GetComponent<Text>().text = player.GetComponent<Player>().gun.GetComponent<Gun>().currentAmmoLoaded.ToString();
         currentAmmoMax.GetComponent<Text>().text = player.GetComponent<Player>().gun.GetComponent<Gun>().maxAmmo.ToString();
         currentCandence.GetComponent<Text>().text = player.GetComponent<Player>().gun.GetComponent<Gun>().fireRate.ToString();
         currentReload.GetComponent<Text>().text = player.GetComponent<Player>().gun.GetComponent<Gun>().reloadTime.ToString();
         currentMoney.GetComponent<Text>().text = p.money.ToString();
-        currentExp.GetComponent<Text>().text = p.experience.ToString();
+        currentExp.GetComponent<Text>().text = (Mathf.Round(p.experience * 100f) / 100f).ToString();
         currentExpMax.GetComponent<Text>().text = p.experienceToNextLevel.ToString();
     }
 }

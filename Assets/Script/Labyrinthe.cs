@@ -30,6 +30,7 @@ public class Labyrinthe : MonoBehaviour {
     void Start ()
     {
 		Generate ();
+        UpgradeManager.GetInstance().CreateUpgrade();
         ShopManager.GetInstance().InitAllShop();
     }
 
@@ -65,6 +66,7 @@ public class Labyrinthe : MonoBehaviour {
 		yPointA = Random.Range(0, length-1);
 		StartRoom = Instantiate(prefabRoom, new Vector3(xPointA*roomLength,0,yPointA*roomLength), Quaternion.identity) as GameObject;
         StartRoom.transform.parent = transform;
+        StartRoom.GetComponent<Room>().isImportant = true;
         Room newRoom = StartRoom.GetComponent<Room>();
 		newRoom.position = new Vector3(xPointA*roomLength,0,yPointA*roomLength);
 		newRoom.xRoom = xPointA;
@@ -89,12 +91,14 @@ public class Labyrinthe : MonoBehaviour {
 		else 
 			player.transform.position = new Vector3 (StartRoom.transform.position.x, StartRoom.transform.position.y + 1, StartRoom.transform.position.z);
 
+        GameManager.GetInstance().SetPlayer(player);
+
 		int rand = Random.Range (0, leaf.Count);
 		EndRoom = leaf [rand];
-		fin = Instantiate (TriggerFin, EndRoom.transform.position, Quaternion.identity) as GameObject;
+		fin = Instantiate (TriggerFin, EndRoom.GetComponent<Room>().GetHalf().transform.position, Quaternion.identity) as GameObject;
         fin.transform.parent = transform;
         fin.GetComponent<EndLevel> ().parent = gameObject;
-		leaf.RemoveAt (rand);
+        leaf.RemoveAt (rand);
 
 		StartRoom.GetComponent<Room> ().PlaceBonus ();
 		int increment = 0;
