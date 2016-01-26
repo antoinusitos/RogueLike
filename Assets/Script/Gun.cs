@@ -127,6 +127,7 @@ public class Gun : MonoBehaviour {
         
         GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
         if (Physics.Raycast(spawnBullet.transform.position, Camera.main.transform.forward, out hit, range))
+        { 
           if (hit.collider.tag == "Enemy")
             {
                 hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
@@ -141,7 +142,8 @@ public class Gun : MonoBehaviour {
             else
             {
                 //b.GetComponent<Bullet>().dir = ((Camera.main.transform.position + Camera.main.transform.forward * range) - transform.position).normalized;
-            }        }
+            }
+        }
         else
         {
             //b.GetComponent<Bullet>().dir = (Camera.main.transform.forward - transform.position).normalized;

@@ -124,7 +124,6 @@ public class Shop : MonoBehaviour {
     {
         ShopCanvas s = shopGUI.transform.GetChild(0).transform.GetComponent<ShopCanvas>();
         s.text1.GetComponent<Text>().text = "1 - Refill Life ( cost:"+refillLifeAmount+")";
-        Debug.Log(content[0].toString());
         s.text2.GetComponent<Text>().text = "2 - Upgrade " + content[0].GetTypeUpgrade() + " (cost:" + content[0].GetCost() + ", lvl :" + content[0].GetNivMinPlayer() + ")";
         s.text3.GetComponent<Text>().text = "3 - Upgrade " + content[1].GetTypeUpgrade() + " (cost:" + content[1].GetCost() + ", lvl :" + content[1].GetNivMinPlayer() + ")";
         s.text4.GetComponent<Text>().text = "4 - Upgrade " + content[2].GetTypeUpgrade() + " (cost:" + content[2].GetCost() + ", lvl :" + content[2].GetNivMinPlayer() + ")";
@@ -138,20 +137,4 @@ public class Shop : MonoBehaviour {
         player = null;
         opened = false;
     }
-
-    void OnTriggerEnter(Collider other)
-	{
-		if(other.transform.tag == "Player")
-		{
-			
-		}
-	}
-
-	void OnTriggerExit(Collider other)
-	{
-		if(other.transform.tag == "Player")
-		{
-			
-		}
-	}
 }

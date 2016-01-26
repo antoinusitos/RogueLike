@@ -72,7 +72,7 @@ public class Upgrade {
         }
         else if (currentType == type.damage)
         {
-            p.GetComponent<StatPlayer>().AddStatStamina(value);
+            p.GetComponent<StatPlayer>().AddStatDamage(value);
         }
         else if (currentType == type.cadence)
         {

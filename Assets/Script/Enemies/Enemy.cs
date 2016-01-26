@@ -7,7 +7,6 @@ public class Enemy : MonoBehaviour {
     public GameObject bullet;
     public GameObject explosionFX;
     public GameObject spawnBullet;
-
     public float maxHealth;
     public float currentHealth;
     public float moveSpeed;
@@ -20,6 +19,7 @@ public class Enemy : MonoBehaviour {
     public float delayBetweenBullet;
     public int nbOfBullets;
 
+    public int rotationSpeed;
     bool activateShoot;
     bool canShoot;
     bool isShooting;
@@ -31,14 +31,13 @@ public class Enemy : MonoBehaviour {
 
     public int degats;
 
-	// Use this for initialization
-	void Start ()
-    {
-	isDying = false;
+    // Use this for initialization
+    void Start () {
+        isDying = false;
         maxHealth = 50;
         currentHealth = maxHealth;
         moveSpeed = 1f;
-        player = GameObject.FindGameObjectWithTag("Player");
+       // player = GameObject.FindGameObjectWithTag("Player");
         isShooting = false;
         activateShoot = false;
         canShoot = true;
@@ -48,30 +47,36 @@ public class Enemy : MonoBehaviour {
         delayBetweenBullet = 0.1f;
         nbOfBullets = 3;
         degats = 1;
-
         imprecision = .5f;
+        rotationSpeed = 5;
     }
 	
 	// Update is called once per frame
-	void Update ()
-    {
+	void Update () {
         if(currentHealth <= 0 && !isDying)
         {
-	    isDying = true;
+            isDying = true;
+
             int r = Random.Range(10, 20);
             player.GetComponent<StatPlayer>().AddMoney(r);
             float r2 = Random.Range(10.0f, 30.0f);
             player.GetComponent<StatPlayer>().AddXP(r2);
             Instantiate(pop, transform.position, Quaternion.identity);
-	    transform.GetChild(0).transform.GetComponent<Animator>().SetTrigger("DeathTrigger");
+
+            transform.GetChild(0).transform.GetComponent<Animator>().SetTrigger("DeathTrigger");
 
             Invoke("Explosion", 1f);
+
             Destroy(gameObject, 1f);
         }
-	if(isDying)
+        if(isDying)
             transform.position -= new Vector3(0f, 0.5f, 0f) * Time.deltaTime;
         float step = moveSpeed * Time.deltaTime;
-       if (Vector3.Distance(player.transform.position, transform.position) <= rangeDetection && !activateShoot)
+
+        if(player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
+
+        if (Vector3.Distance(player.transform.position, transform.position) <= rangeDetection && !activateShoot)
         {
             transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
@@ -103,8 +108,8 @@ public class Enemy : MonoBehaviour {
         canShoot = false;
         for(int i =0; i< nbOfBullets; i++)
         {
-          //  GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
-           // b.GetComponent<Bullet>().dir = (player.transform.position - transform.position).normalized ;
+            // GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
+            //b.GetComponent<Bullet>().dir = transform.forward;
             RaycastHit hit;
             float range = 5.0f;
             Vector3 v = new Vector3(Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision));
@@ -113,11 +118,13 @@ public class Enemy : MonoBehaviour {
                 hit.collider.gameObject.GetComponent<Player>().TakeDamage(degats);
             }
             Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized + v, Color.red, 5);
-	    spawnBullet.GetComponent<ParticleSystem>().Play();
+
+            spawnBullet.GetComponent<ParticleSystem>().Play();
             yield return new WaitForSeconds(delayBetweenBullet);
-	    spawnBullet.GetComponent<ParticleSystem>().Stop();
+            spawnBullet.GetComponent<ParticleSystem>().Stop();
         }
         yield return new WaitForSeconds(delayBetweenSpray);
+        
         canShoot = true;
     }
 

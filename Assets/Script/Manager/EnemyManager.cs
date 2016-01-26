@@ -45,7 +45,7 @@ public class EnemyManager : MonoBehaviour {
             rand = Random.Range(0, tab.Length);
             if (tab[rand] != null)
             {
-                GameObject enemy2 = (GameObject)Instantiate(enemyGround, tab[rand].transform.position, Quaternion.identity);
+                GameObject enemy2 = (GameObject)Instantiate(enemyGround, tab[rand].transform.position + new Vector3(0, -0.5f, 0), Quaternion.identity);
                 enemy2.transform.parent = GameObject.Find("AllEnemies").transform;
             }
             else

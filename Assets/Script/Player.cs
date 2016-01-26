@@ -41,7 +41,7 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetButtonDown("Action"))
+        if (Input.GetButtonDown("Action") && !showingStats)
         {
             RaycastHit hit;
 
@@ -67,19 +67,21 @@ public class Player : MonoBehaviour {
             }               
         }
 
-        if (Input.GetButtonDown("Stats"))
+        if (Input.GetButtonDown("Stats") && currentState != State.menu)
         {
             if(showingStats)
             {
                 showingStats = false;
-                currentState = State.alive;
+                gun.GetComponent<Gun>().SetCanShoot(true);
+                // currentState = State.alive;
                 UIManager.GetInstance().ShowStats(false);
                 cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(false);
             }
             else
             {
+                gun.GetComponent<Gun>().SetCanShoot(false);
                 showingStats = true;
-                currentState = State.menu;
+                //currentState = State.menu;
                 UIManager.GetInstance().ShowStats(true);
                 cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(true);
                 PanelStats.GetInstance().UpdateStats(gameObject);
