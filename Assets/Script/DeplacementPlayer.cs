@@ -35,6 +35,10 @@ public class DeplacementPlayer : MonoBehaviour
                 RemoveStamina();
                 multiply = 1.5f;
             }
+            else if (Input.GetButton("Sprint"))
+            {
+                multiply = 1.0f;
+            }
             else
             {
                 AddStamina();
