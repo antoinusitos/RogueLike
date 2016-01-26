@@ -155,6 +155,7 @@ public class Room : MonoBehaviour {
         }
 
         EnemyManager.GetInstance().SpawnEnemy(tab);
+        EnemyManager.GetInstance().SpawnGroundEnemy(tab);
     }
 
     void EmptyCorridor()

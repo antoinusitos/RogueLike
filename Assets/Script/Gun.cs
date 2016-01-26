@@ -20,8 +20,11 @@ public class Gun : MonoBehaviour {
     public GameObject bullet;
     public GameObject spawnBullet;
     public GameObject spawnDouille;
+    public GameObject bulletTrail;
 
     Text bulletIndicator;
+
+    public GameObject bulletTex;
     
 
 
@@ -91,14 +94,32 @@ public class Gun : MonoBehaviour {
     {
         canShoot = false;
         currentAmmoLoaded--;
-        GameObject b = (GameObject)Instantiate(bullet, spawnBullet.transform.position, Quaternion.identity);
-        b.GetComponent<Bullet>().dir = Camera.main.transform.forward;
+        
         //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
-        if (Physics.Raycast(spawnBullet.transform.position, Camera.main.transform.forward, out hit, range) && hit.collider.tag == "Enemy")
+        GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
+        if (Physics.Raycast(spawnBullet.transform.position, Camera.main.transform.forward, out hit, range))
         {
-            Debug.Log("Touche");
-           hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
+            if (hit.collider.tag == "Enemy")
+            {
+                hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
+                //b.GetComponent<Bullet>().dir = (hit.point - transform.position).normalized;
+            }
+            else if (hit.collider.tag == "Wall" || hit.collider.tag == "floor")
+            {
+                Quaternion startRot = Quaternion.LookRotation(hit.normal);
+                Instantiate(bulletTex, hit.point, startRot);
+                //b.GetComponent<Bullet>().dir = (hit.point - transform.position).normalized;
+            }
+            else
+            {
+                //b.GetComponent<Bullet>().dir = ((Camera.main.transform.position + Camera.main.transform.forward * range) - transform.position).normalized;
+            }
+        }
+        else
+        {
+            //b.GetComponent<Bullet>().dir = (Camera.main.transform.forward - transform.position).normalized;
+            
         }
 
         yield return new WaitForSeconds(fireRate);
