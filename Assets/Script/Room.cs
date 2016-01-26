@@ -160,9 +160,14 @@ public class Room : MonoBehaviour {
                 index++;
             }
         }
+
         
         if(!isImportant)
-            EnemyManager.GetInstance().SpawnEnemy(tab);
+		{
+			EnemyManager.GetInstance().SpawnEnemy(tab);
+        	EnemyManager.GetInstance().SpawnGroundEnemy(tab);
+		}
+           
     }
 
     void EmptyCorridor()
