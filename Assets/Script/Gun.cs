@@ -55,7 +55,7 @@ public class Gun : MonoBehaviour {
             StartCoroutine(Reload(currentAmmoLoaded));
         }
 
-            Debug.Log(canShoot);
+            //Debug.Log(canShoot);
     }
 
     IEnumerator Reload(int currentAmmoInGun)
@@ -63,7 +63,7 @@ public class Gun : MonoBehaviour {
         canShoot = false;
         canReload = false;
         yield return new WaitForSeconds(reloadTime);
-        Debug.Log(currentAmmo);
+        //Debug.Log(currentAmmo);
         if((maxAmmoLoaded - currentAmmoInGun) > currentAmmo)
         {
             currentAmmoLoaded = currentAmmoInGun + currentAmmo;
@@ -91,7 +91,7 @@ public class Gun : MonoBehaviour {
         b.GetComponent<Bullet>().dir = transform.forward;
         b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
-        Debug.Log(fireRate);
+        //Debug.Log(fireRate);
         yield return new WaitForSeconds(fireRate);
         if (currentAmmoLoaded <= 0)
         {
