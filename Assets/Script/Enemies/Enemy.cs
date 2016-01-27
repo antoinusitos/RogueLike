@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
+
     public GameObject player;
     public GameObject bullet;
     public GameObject explosionFX;
@@ -76,13 +77,22 @@ public class Enemy : MonoBehaviour {
         if(player == null)
             player = GameObject.FindGameObjectWithTag("Player");
 
+        RaycastHit hit;
         if (Vector3.Distance(player.transform.position, transform.position) <= rangeDetection && !activateShoot)
         {
-            transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
-
             Quaternion targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            if (Physics.Raycast(transform.position, transform.forward, out hit, rangeDetection))
+            {
+                if (hit.collider.tag == "Player")
+                {
+                    transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
+                    transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+                }
+            }
+            
+
+            
         }
         if (Vector3.Distance(player.transform.position, transform.position) <= shootRange)
         {
