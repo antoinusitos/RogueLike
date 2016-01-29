@@ -30,6 +30,10 @@ public class Gun : MonoBehaviour {
     Text bulletIndicator;
 	public GameObject bulletTex;
 	public GameObject Spark;
+
+    public AudioSource reloadGun;
+    public AudioSource fireGun;
+
     // Use this for initialization
     void Start () {
 
@@ -48,7 +52,10 @@ public class Gun : MonoBehaviour {
         currentAmmoLoaded = maxAmmoLoaded;
         currentAmmo = maxAmmo;
 
-	    if(currentAmmoLoaded > 0)
+        reloadGun = SoundManager.instance.reload.GetComponent<AudioSource>();
+        fireGun = SoundManager.instance.playerGun.GetComponent<AudioSource>();
+
+        if (currentAmmoLoaded > 0)
         {
             canShoot = true;
             canReload = true;
@@ -61,6 +68,7 @@ public class Gun : MonoBehaviour {
         //Reload
         if (Input.GetKeyDown(KeyCode.R) && canReload && (currentAmmoLoaded < maxAmmoLoaded) && currentAmmo > 0)
         {
+            reloadGun.Play();
             StartCoroutine(Reload(currentAmmoLoaded));
         }
         //Shoot
@@ -71,6 +79,7 @@ public class Gun : MonoBehaviour {
 
         if (Input.GetMouseButton(0) && currentAmmoLoaded == 0 && !canShoot && canReload && currentAmmo > 0)
         {
+            reloadGun.Play();
             StopCoroutine(Fire());
             StartCoroutine(Reload(currentAmmoLoaded));
         }
@@ -127,7 +136,7 @@ public class Gun : MonoBehaviour {
     {
         canShoot = false;
         currentAmmoLoaded--;
-
+        fireGun.Play();
         Camera.main.transform.GetChild(0).GetComponent<GunAnim>().Shoot();
 
         //b.transform.LookAt(Camera.main.transform);

@@ -40,10 +40,8 @@ public class GameManager : MonoBehaviour {
         //StartCoroutine(LoadMenu());   
     }
 
-   
 
-
-public void SetPlayer(GameObject p )
+    public void SetPlayer(GameObject p )
     {
         player = p;
     } 
@@ -81,7 +79,7 @@ public void SetPlayer(GameObject p )
         if(Input.GetKeyDown(KeyCode.Escape) && isInPause == false)
         {
             buttonPressed.Play();
-
+            player.GetComponent<Player>().SetState(Player.State.menu);
             isInPause = true;
             PauseCanvas.SetActive(true);
             UICanvas.SetActive(false);
@@ -93,7 +91,7 @@ public void SetPlayer(GameObject p )
         if(Input.GetKeyDown(KeyCode.Escape) && isInPause == true)
         {
             buttonPressed.Play();
-
+            player.GetComponent<Player>().SetState(Player.State.alive);
             PauseCanvas.SetActive(false);
             UICanvas.SetActive(true);
             Time.timeScale = 1;
@@ -105,8 +103,6 @@ public void SetPlayer(GameObject p )
     }
 
     public void exitPause()
-
-
     {
         buttonPressed.Play();
 

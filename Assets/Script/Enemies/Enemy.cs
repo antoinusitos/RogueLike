@@ -29,6 +29,10 @@ public class Enemy : MonoBehaviour {
 
     public int degats;
 
+    public AudioSource machineGun;
+    public AudioSource explosion;
+    public AudioSource crashAlarm;
+
     // Use this for initialization
     void Start () {
         isDying = false;
@@ -47,12 +51,17 @@ public class Enemy : MonoBehaviour {
         degats = 2;
         imprecision = .5f;
         rotationSpeed = 5;
+
+        machineGun = SoundManager.instance.ennemiMachinegun.GetComponent<AudioSource>();
+        explosion = SoundManager.instance.explosion.GetComponent<AudioSource>();
+        crashAlarm = SoundManager.instance.crashAlarm.GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
 	void Update () {
         if(currentHealth <= 0 && !isDying)
         {
+            crashAlarm.Play();
             isDying = true;
 
             int r = Random.Range(10, 20);
@@ -137,6 +146,7 @@ public class Enemy : MonoBehaviour {
             spawnBullet.GetComponent<ParticleSystem>().Play();
             yield return new WaitForSeconds(delayBetweenBullet);
             spawnBullet.GetComponent<ParticleSystem>().Stop();
+            machineGun.Play();
         }
         yield return new WaitForSeconds(delayBetweenSpray);
         
@@ -146,5 +156,6 @@ public class Enemy : MonoBehaviour {
     public void Explosion()
     {
         Instantiate(explosionFX, transform.position, Quaternion.identity);
+        explosion.Play();
     }
 }

@@ -145,6 +145,11 @@ public class Player : MonoBehaviour {
         return currentState;
     }
 
+    public void SetState(State theState)
+    {
+        currentState = theState;
+    }
+
     public void AddLife(int adding)
     {
         if (life < maxLife)

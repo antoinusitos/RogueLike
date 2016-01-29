@@ -31,6 +31,9 @@ public class GroundEnemy : MonoBehaviour {
 
     public int degats;
 
+    public AudioSource machineGun;
+    public AudioSource explosion;
+
     // Use this for initialization
     void Start()
     {
@@ -50,6 +53,9 @@ public class GroundEnemy : MonoBehaviour {
         degats = 3;
         imprecision = .5f;
         rotationSpeed = 5;
+
+        machineGun = SoundManager.instance.ennemiMachinegun.GetComponent<AudioSource>();
+        explosion = SoundManager.instance.explosion.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -146,6 +152,7 @@ public class GroundEnemy : MonoBehaviour {
             spawnBullet.GetComponent<ParticleSystem>().Play();
             yield return new WaitForSeconds(delayBetweenBullet);
             spawnBullet.GetComponent<ParticleSystem>().Stop();
+            machineGun.Play();
         }
         yield return new WaitForSeconds(delayBetweenSpray);
         transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Attack", false);
@@ -156,6 +163,7 @@ public class GroundEnemy : MonoBehaviour {
     public void Explosion()
     {
         Instantiate(explosionFX, transform.position, Quaternion.identity);
+        explosion.Play();
     }
 
     public void PopAmmo()
