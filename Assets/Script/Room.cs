@@ -161,8 +161,11 @@ public class Room : MonoBehaviour {
                 tab[index] = room[x, y];
                 index++;
                 float rand = Random.Range(0, 1.0f);
-                if(rand < 0.1f)
-                    Instantiate(plant, room[x, y].transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+                if (rand < 0.1f)
+                {
+                    GameObject go = (GameObject)Instantiate(plant, room[x, y].transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+                    go.transform.parent = GameObject.Find("AllPlants").transform;
+                }  
             }
         }
 

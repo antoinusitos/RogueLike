@@ -12,7 +12,7 @@ public class Shop : MonoBehaviour {
     public int refillLifeCost;
     public int refillLifeAmount;
 
-    Upgrade[] content;
+    public Upgrade[] content;
 	
     void Start()
     {
@@ -83,7 +83,6 @@ public class Shop : MonoBehaviour {
 
     public void InitShop()
     {
-        
         content = new Upgrade[5];
         List<Upgrade> upgrades = UpgradeManager.GetInstance().upgrades;
 

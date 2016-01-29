@@ -19,7 +19,20 @@ public class EndLevel : MonoBehaviour {
 	{
 		if(other.tag == "Player")
 		{
-			parent.GetComponent<Labyrinthe>().Generate();
-		}
+            GameObject go = GameObject.Find("AllEnemies");
+            GameObject go2 = GameObject.Find("AllPlants");
+            go.SetActive(false);
+            go2.SetActive(false);
+
+            new GameObject("AllEnemies");
+            new GameObject("AllPlants");
+
+            Destroy(go);
+            Destroy(go2);
+
+            parent.GetComponent<Labyrinthe>().Generate();
+            UpgradeManager.GetInstance().CreateUpgrade();
+            ShopManager.GetInstance().InitAllShop();
+        }
 	}
 }

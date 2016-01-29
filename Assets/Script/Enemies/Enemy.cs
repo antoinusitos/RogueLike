@@ -55,6 +55,7 @@ public class Enemy : MonoBehaviour {
 	void Update () {
         if(currentHealth <= 0 && !isDying)
         {
+            Debug.Log("dead");
             isDying = true;
 
             int r = Random.Range(10, 20);
@@ -78,7 +79,7 @@ public class Enemy : MonoBehaviour {
 
         if (Vector3.Distance(player.transform.position, transform.position) <= rangeDetection && !activateShoot)
         {
-            transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
+            //transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
 
             Quaternion targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);

@@ -24,15 +24,19 @@ public class Gun : MonoBehaviour {
     public GameObject spawnDouille;
     public GameObject bulletTrail;
 
+    public GameObject gunModel;
+    public AnimationClip reloadAnim;
+
     Text bulletIndicator;
 	public GameObject bulletTex;
-	// Use this for initialization
-	void Start () {
+	public GameObject Spark;
+    // Use this for initialization
+    void Start () {
 
         damage = 10;
         range = 5;
         fireRate = .5f;
-        reloadTime = 2;
+        reloadTime = 3;
         reloadingTime = 0;
         maxAmmoLoaded = 20;
         maxAmmo = 240;
@@ -92,6 +96,8 @@ public class Gun : MonoBehaviour {
 
     IEnumerator Reload(int currentAmmoInGun)
     {
+        gunModel.GetComponent<Animator>().speed = reloadAnim.length / reloadTime;
+        gunModel.GetComponent<Animator>().SetTrigger("Reload");
         UIManager.GetInstance().reloadBar.SetActive(true);
         reloadingTime = 0;
         reloading = true;
@@ -121,7 +127,9 @@ public class Gun : MonoBehaviour {
     {
         canShoot = false;
         currentAmmoLoaded--;
-        
+
+        Camera.main.transform.GetChild(0).GetComponent<GunAnim>().Shoot();
+
         //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
         
@@ -131,6 +139,7 @@ public class Gun : MonoBehaviour {
           if (hit.collider.tag == "Enemy")
             {
                 hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
+                Instantiate(Spark, hit.point, Quaternion.identity);
                 //b.GetComponent<Bullet>().dir = (hit.point - transform.position).normalized;
             }
             else if (hit.collider.tag == "Wall" || hit.collider.tag == "floor")
@@ -164,5 +173,15 @@ public class Gun : MonoBehaviour {
     {
         currentAmmo += amount;
         UpdateUI();
+    }
+
+    public void MaxAmmo()
+    {
+        currentAmmoLoaded = maxAmmoLoaded;
+    }
+
+    public void SetDamage(float amount)
+    {
+        damage = amount;
     }
 }
