@@ -45,15 +45,19 @@ public class GroundEnemy : MonoBehaviour {
         rangeDetection = 7f;
         shootRange = 3f;
         delayBetweenSpray = .1f;
-        delayBetweenBullet = 0.1f;
+        delayBetweenBullet = 0.8f;
         nbOfBullets = 3;
         degats = 1;
         imprecision = .5f;
         rotationSpeed = 5;
     }
 
-    // Update is called once per frame
     void Update()
+    {
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
     {
         if (currentHealth <= 0 && !isDying)
         {
@@ -63,13 +67,17 @@ public class GroundEnemy : MonoBehaviour {
             player.GetComponent<StatPlayer>().AddMoney(r);
             float r2 = Random.Range(10.0f, 30.0f);
             player.GetComponent<StatPlayer>().AddXP(r2);
-            Instantiate(pop, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+            transform.GetChild(0).transform.GetComponent<Animator>().SetTrigger("TriggerDeath");
 
-            transform.GetChild(0).transform.GetComponent<Animator>().SetTrigger("DeathTrigger");
-
+            float r3 = Random.Range(0.0f, 1.0f);
+            if(r3 > 0.33f)
+            {
+                Invoke("PopAmmo", 0.9f);
+            }
             Invoke("Explosion", 1f);
-
+           
             Destroy(gameObject, 1f);
+           
         }
         if (isDying)
             transform.position -= new Vector3(0f, 0.5f, 0f) * Time.deltaTime;
@@ -83,21 +91,27 @@ public class GroundEnemy : MonoBehaviour {
         {
             Quaternion targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            if (Physics.Raycast(transform.position, transform.forward, out hit, rangeDetection))
+           
+            if (Physics.Raycast(transform.position+new Vector3(0, 0.5f, 0), transform.forward, out hit, rangeDetection))
             {
                 if (hit.collider.tag == "Player")
                 {
                     transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
                     transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z), step);
                 }
+                else
+                {
+                    transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", false);
+                }
             }
-
-
-
+        }
+        else
+        {
+            transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", false);
         }
         if (Vector3.Distance(player.transform.position, transform.position) <= shootRange)
         {
-            transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", false);
+           
             Quaternion targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
@@ -105,7 +119,9 @@ public class GroundEnemy : MonoBehaviour {
             activateShoot = true;
             if (canShoot)
             {
+                transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Attack", true);
                 StartCoroutine(Shoot());
+               
             }
         }
         else
@@ -128,13 +144,13 @@ public class GroundEnemy : MonoBehaviour {
             {
                 hit.collider.gameObject.GetComponent<Player>().TakeDamage(degats);
             }
-            Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized + v, Color.red, 5);
-
+           
             spawnBullet.GetComponent<ParticleSystem>().Play();
             yield return new WaitForSeconds(delayBetweenBullet);
             spawnBullet.GetComponent<ParticleSystem>().Stop();
         }
         yield return new WaitForSeconds(delayBetweenSpray);
+        transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Attack", false);
 
         canShoot = true;
     }
@@ -143,4 +159,10 @@ public class GroundEnemy : MonoBehaviour {
     {
         Instantiate(explosionFX, transform.position, Quaternion.identity);
     }
+
+    public void PopAmmo()
+    {
+        Instantiate(pop, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+    }
+
 }

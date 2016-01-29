@@ -13,8 +13,6 @@ public class Enemy : MonoBehaviour {
     public float moveSpeed;
     public float rangeDetection;
 
-    public float attackRange;
-    public float attackSpeed;
     public float shootRange;
     public float delayBetweenSpray;
     public float delayBetweenBullet;
@@ -86,13 +84,21 @@ public class Enemy : MonoBehaviour {
             {
                 if (hit.collider.tag == "Player")
                 {
+                    Debug.Log("toto");
                     transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
                     transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
                 }
+                else
+                {
+                    transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", false);
+                }
             }
-            
 
-            
+
+
+        }else
+        {
+            transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", false);
         }
         if (Vector3.Distance(player.transform.position, transform.position) <= shootRange)
         {
@@ -123,12 +129,10 @@ public class Enemy : MonoBehaviour {
             RaycastHit hit;
             float range = 5.0f;
             Vector3 v = new Vector3(Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision));
-            if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized + v, out hit, range) && hit.collider.tag == "Player")
+            if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized + v, out hit, shootRange) && hit.collider.tag == "Player")
             {
                 hit.collider.gameObject.GetComponent<Player>().TakeDamage(degats);
             }
-            Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized + v, Color.red, 5);
-
             spawnBullet.GetComponent<ParticleSystem>().Play();
             yield return new WaitForSeconds(delayBetweenBullet);
             spawnBullet.GetComponent<ParticleSystem>().Stop();
