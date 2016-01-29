@@ -141,6 +141,9 @@ public class Gun : MonoBehaviour {
                 hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
                 Instantiate(Spark, hit.point, Quaternion.identity);
                 //b.GetComponent<Bullet>().dir = (hit.point - transform.position).normalized;
+            }else if(hit.collider.tag == "EnemyGround")
+            {
+                hit.collider.gameObject.GetComponent<GroundEnemy>().currentHealth -= damage;
             }
             else if (hit.collider.tag == "Wall" || hit.collider.tag == "floor")
             {
