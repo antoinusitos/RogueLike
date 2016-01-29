@@ -22,7 +22,7 @@ public class GroundEnemy : MonoBehaviour {
     public int rotationSpeed;
     bool activateShoot;
     bool canShoot;
-    bool isShooting;
+    //bool isShooting;
     bool isDying;
 
     public float imprecision;
@@ -39,15 +39,15 @@ public class GroundEnemy : MonoBehaviour {
         currentHealth = maxHealth;
         moveSpeed = 1f;
         // player = GameObject.FindGameObjectWithTag("Player");
-        isShooting = false;
+        //isShooting = false;
         activateShoot = false;
         canShoot = true;
-        rangeDetection = 7f;
-        shootRange = 3f;
+        rangeDetection = 10f;
+        shootRange = 8f;
         delayBetweenSpray = .1f;
         delayBetweenBullet = 0.8f;
         nbOfBullets = 3;
-        degats = 1;
+        degats = 3;
         imprecision = .5f;
         rotationSpeed = 5;
     }

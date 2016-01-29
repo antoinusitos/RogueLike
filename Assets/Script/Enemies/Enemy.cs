@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour {
     public int rotationSpeed;
     bool activateShoot;
     bool canShoot;
-    bool isShooting;
+   // bool isShooting;
     bool isDying;
 
     public float imprecision;
@@ -36,15 +36,15 @@ public class Enemy : MonoBehaviour {
         currentHealth = maxHealth;
         moveSpeed = 1f;
        // player = GameObject.FindGameObjectWithTag("Player");
-        isShooting = false;
+        //isShooting = false;
         activateShoot = false;
         canShoot = true;
-        rangeDetection = 7f;
-        shootRange = 3f;
+        rangeDetection = 10f;
+        shootRange = 8f;
         delayBetweenSpray = .1f;
         delayBetweenBullet = 0.1f;
         nbOfBullets = 3;
-        degats = 1;
+        degats = 2;
         imprecision = .5f;
         rotationSpeed = 5;
     }
@@ -85,19 +85,20 @@ public class Enemy : MonoBehaviour {
             {
                 if (hit.collider.tag == "Player")
                 {
-                    Debug.Log("toto");
                     transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", true);
                     transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
                 }
                 else
                 {
                     transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", false);
+                    transform.position = transform.position;
                 }
             }
 
 
 
-        }else
+        }
+        else
         {
             transform.GetChild(0).transform.GetComponent<Animator>().SetBool("Avance", false);
         }
@@ -128,7 +129,6 @@ public class Enemy : MonoBehaviour {
             // GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
             //b.GetComponent<Bullet>().dir = transform.forward;
             RaycastHit hit;
-            float range = 5.0f;
             Vector3 v = new Vector3(Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision));
             if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized + v, out hit, shootRange) && hit.collider.tag == "Player")
             {

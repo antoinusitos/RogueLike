@@ -34,7 +34,7 @@ public class Gun : MonoBehaviour {
     void Start () {
 
         damage = 10;
-        range = 5;
+        range = 8;
         fireRate = .5f;
         reloadTime = 3;
         reloadingTime = 0;
@@ -133,7 +133,7 @@ public class Gun : MonoBehaviour {
         //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
         
-        GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
+        //GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
         if (Physics.Raycast(spawnBullet.transform.position, Camera.main.transform.forward, out hit, range))
         { 
           if (hit.collider.tag == "Enemy")
@@ -141,9 +141,11 @@ public class Gun : MonoBehaviour {
                 hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
                 Instantiate(Spark, hit.point, Quaternion.identity);
                 //b.GetComponent<Bullet>().dir = (hit.point - transform.position).normalized;
-            }else if(hit.collider.tag == "EnemyGround")
+            }
+            else if(hit.collider.tag == "EnemyGround")
             {
                 hit.collider.gameObject.GetComponent<GroundEnemy>().currentHealth -= damage;
+                Instantiate(Spark, hit.point, Quaternion.identity);
             }
             else if (hit.collider.tag == "Wall" || hit.collider.tag == "floor")
             {

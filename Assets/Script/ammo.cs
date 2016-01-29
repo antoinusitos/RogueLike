@@ -7,7 +7,7 @@ public class ammo : MonoBehaviour {
     {
         if(other.transform.tag == "Player")
         {
-            int r = Random.Range(10, 20);
+            int r = Random.Range(5, 10);
             other.transform.GetComponent<Player>().gun.GetComponent<Gun>().AddAmmo(r);
             Destroy(gameObject);
         }
