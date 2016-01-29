@@ -15,6 +15,10 @@ public class Player : MonoBehaviour {
 
     public bool showingStats;
 
+    public AudioSource heavyBreathing;
+    public AudioSource enterShop;
+
+
     public enum State
     {
         alive,
@@ -32,6 +36,9 @@ public class Player : MonoBehaviour {
         life = maxLife;
         currentState = State.alive;
         RefreshUI();
+
+        heavyBreathing = SoundManager.instance.eavyBreathing.GetComponent<AudioSource>();
+        enterShop = SoundManager.instance.enterShop.GetComponent<AudioSource>();
     }
 
     public bool NeedHeal()
@@ -55,6 +62,7 @@ public class Player : MonoBehaviour {
                         cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(false);
                         gun.GetComponent<Gun>().SetCanShoot(true);
                         hit.transform.gameObject.GetComponent<Shop>().HideUI();
+
                     }
                     else
                     {
@@ -62,6 +70,7 @@ public class Player : MonoBehaviour {
                         cameraPlayer.GetComponent<SimpleSmoothMouseLook>().SetLockView(true);
                         gun.GetComponent<Gun>().SetCanShoot(false);
                         hit.transform.gameObject.GetComponent<Shop>().ShowUI(gameObject);
+                        enterShop.Play();
                     }
                 }
             }               
@@ -118,6 +127,16 @@ public class Player : MonoBehaviour {
             {
                 TakeDamage(20);
             }
+        }
+
+        if (life <= (maxLife * 0.1))
+        {
+            heavyBreathing.Play();
+        }
+
+        if (life > (maxLife * 0.1))
+        {
+            heavyBreathing.Stop();        
         }
     }
 	

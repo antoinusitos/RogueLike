@@ -21,6 +21,8 @@ public class StatPlayer : MonoBehaviour {
     public float upgradeCadence;
     public int upgradeAmmo;
 
+    public AudioSource buyShop;
+
     void Start()
     {
         money = 100;
@@ -41,18 +43,22 @@ public class StatPlayer : MonoBehaviour {
         upgradeReload = 0.05f;
         upgradeCadence = 0.05f;
 
+        buyShop = SoundManager.instance.buyShop.GetComponent<AudioSource>();
+
         RefreshUI();
     }
 
     public void RefreshUI()
     {
-        UIManager.GetInstance().SetUIText(UIManager.GetInstance().moneyText, "money : " + money);
+        UIManager.GetInstance().SetUIText(UIManager.GetInstance().moneyText, " : " + money);
     }
 
     public void RemoveMoney(int amount)
     {
         if (money - amount >= 0)
             money -= amount;
+
+        buyShop.Play();
         RefreshUI();
     }
 

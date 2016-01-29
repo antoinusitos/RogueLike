@@ -26,6 +26,11 @@ public class Gun : MonoBehaviour {
 
     Text bulletIndicator;
 	public GameObject bulletTex;
+
+    public AudioSource reloadGun;
+    public AudioSource fireGun;
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -40,6 +45,10 @@ public class Gun : MonoBehaviour {
         canShoot = false;
         canReload = false;
         reloading = false;
+
+        reloadGun = SoundManager.instance.reload.GetComponent<AudioSource>();
+        fireGun = SoundManager.instance.playerGun.GetComponent<AudioSource>();
+
 
         currentAmmoLoaded = maxAmmoLoaded;
         currentAmmo = maxAmmo;
@@ -57,6 +66,7 @@ public class Gun : MonoBehaviour {
         //Reload
         if (Input.GetKeyDown(KeyCode.R) && canReload && (currentAmmoLoaded < maxAmmoLoaded) && currentAmmo > 0)
         {
+            reloadGun.Play();
             StartCoroutine(Reload(currentAmmoLoaded));
         }
         //Shoot
@@ -67,6 +77,8 @@ public class Gun : MonoBehaviour {
 
         if (Input.GetMouseButton(0) && currentAmmoLoaded == 0 && !canShoot && canReload && currentAmmo > 0)
         {
+            reloadGun.Play();
+
             StopCoroutine(Fire());
             StartCoroutine(Reload(currentAmmoLoaded));
         }
@@ -121,7 +133,7 @@ public class Gun : MonoBehaviour {
     {
         canShoot = false;
         currentAmmoLoaded--;
-        
+        fireGun.Play();
         //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
         

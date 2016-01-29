@@ -1,20 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SoundManager : MonoBehaviour
-{
+public class SoundManager : MonoBehaviour {
 
-    private static SoundManager instance = null;
-    
-    public static SoundManager GetInstance()
-    {
-        return instance;
-    }
+    public static SoundManager instance = null;
 
     void Awake()
     {
-        instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        if (instance != null)
+        {
+            Destroy(this);
+        }
     }
+
+
+
+    public AudioSource buttonPressed;
+    public AudioSource playerGun;
+    public AudioSource reload;
+    public AudioSource eavyBreathing;
+    public AudioSource ennemiMachinegun;
+    public AudioSource enterShop;
+    public AudioSource buyShop;
+    public AudioSource explosion;
+    public AudioSource crashAlarm;
+
+   
 
 }
