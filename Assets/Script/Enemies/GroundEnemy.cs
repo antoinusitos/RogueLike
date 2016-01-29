@@ -135,8 +135,6 @@ public class GroundEnemy : MonoBehaviour {
         canShoot = false;
         for (int i = 0; i < nbOfBullets; i++)
         {
-            // GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
-            //b.GetComponent<Bullet>().dir = transform.forward;
             RaycastHit hit;
             float range = 5.0f;
             Vector3 v = new Vector3(Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision), Random.Range(-imprecision, imprecision));
