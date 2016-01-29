@@ -12,15 +12,12 @@ public class Shop : MonoBehaviour {
     public int refillLifeCost;
     public int refillLifeAmount;
 
-
-    Upgrade[] content;
+    public Upgrade[] content;
 	
     void Start()
     {
         refillLifeCost = 20;
         refillLifeAmount = 30;
-
-      
     }
 
 	// Update is called once per frame
@@ -28,8 +25,6 @@ public class Shop : MonoBehaviour {
 	{
 		if(opened)
 		{
-            
-
 			if(Input.GetKeyDown(KeyCode.Alpha1))
 			{
                 if (player.GetComponent<Player>().NeedHeal() && player.GetComponent<StatPlayer>().GetMoney() >= refillLifeCost)
@@ -88,7 +83,6 @@ public class Shop : MonoBehaviour {
 
     public void InitShop()
     {
-        
         content = new Upgrade[5];
         List<Upgrade> upgrades = UpgradeManager.GetInstance().upgrades;
 
@@ -141,6 +135,5 @@ public class Shop : MonoBehaviour {
         Destroy(shopGUI.gameObject);
         player = null;
         opened = false;
-       
     }
 }

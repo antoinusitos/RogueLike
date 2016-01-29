@@ -158,6 +158,16 @@ public class Player : MonoBehaviour {
         RefreshUI();
     }
 
+    public void SetLife(int amount)
+    {
+        life = amount;
+    }
+
+    public void SetMaxLife(int amount)
+    {
+        maxLife = amount;
+    }
+
     public void TakeDamage(int amount)
     {
         life -= amount;

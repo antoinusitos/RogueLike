@@ -52,7 +52,8 @@ public class Labyrinthe : MonoBehaviour {
 				}
 			}
 			Destroy(fin);
-		}
+            count = 0;
+        }
 
 		leaf = new List<GameObject> ();
 		directions = new List<int>();
@@ -89,7 +90,7 @@ public class Labyrinthe : MonoBehaviour {
 		if (player == null)
 			player = Instantiate (PlayerPrefab, new Vector3 (StartRoom.transform.position.x, StartRoom.transform.position.y + 1, StartRoom.transform.position.z), Quaternion.identity) as GameObject;
 		else 
-			player.transform.position = new Vector3 (StartRoom.transform.position.x, StartRoom.transform.position.y + 1, StartRoom.transform.position.z);
+			player.transform.position = new Vector3 (StartRoom.transform.position.x, StartRoom.transform.position.y + 2, StartRoom.transform.position.z);
 
         GameManager.GetInstance().SetPlayer(player);
 
@@ -261,4 +262,12 @@ public class Labyrinthe : MonoBehaviour {
 		}
 		return -1;
 	}
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            player.transform.position = fin.transform.position + new Vector3(0, 5f, 0);
+        }
+    }
 }

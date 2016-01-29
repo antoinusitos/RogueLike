@@ -24,20 +24,19 @@ public class Gun : MonoBehaviour {
     public GameObject spawnDouille;
     public GameObject bulletTrail;
 
+    public GameObject gunModel;
+    public AnimationClip reloadAnim;
+
     Text bulletIndicator;
 	public GameObject bulletTex;
-
-    public AudioSource reloadGun;
-    public AudioSource fireGun;
-
-
-	// Use this for initialization
-	void Start () {
+	public GameObject Spark;
+    // Use this for initialization
+    void Start () {
 
         damage = 10;
-        range = 5;
+        range = 8;
         fireRate = .5f;
-        reloadTime = 2;
+        reloadTime = 3;
         reloadingTime = 0;
         maxAmmoLoaded = 20;
         maxAmmo = 240;
@@ -45,10 +44,6 @@ public class Gun : MonoBehaviour {
         canShoot = false;
         canReload = false;
         reloading = false;
-
-        reloadGun = SoundManager.instance.reload.GetComponent<AudioSource>();
-        fireGun = SoundManager.instance.playerGun.GetComponent<AudioSource>();
-
 
         currentAmmoLoaded = maxAmmoLoaded;
         currentAmmo = maxAmmo;
@@ -66,7 +61,6 @@ public class Gun : MonoBehaviour {
         //Reload
         if (Input.GetKeyDown(KeyCode.R) && canReload && (currentAmmoLoaded < maxAmmoLoaded) && currentAmmo > 0)
         {
-            reloadGun.Play();
             StartCoroutine(Reload(currentAmmoLoaded));
         }
         //Shoot
@@ -77,8 +71,6 @@ public class Gun : MonoBehaviour {
 
         if (Input.GetMouseButton(0) && currentAmmoLoaded == 0 && !canShoot && canReload && currentAmmo > 0)
         {
-            reloadGun.Play();
-
             StopCoroutine(Fire());
             StartCoroutine(Reload(currentAmmoLoaded));
         }
@@ -104,6 +96,8 @@ public class Gun : MonoBehaviour {
 
     IEnumerator Reload(int currentAmmoInGun)
     {
+        gunModel.GetComponent<Animator>().speed = reloadAnim.length / reloadTime;
+        gunModel.GetComponent<Animator>().SetTrigger("Reload");
         UIManager.GetInstance().reloadBar.SetActive(true);
         reloadingTime = 0;
         reloading = true;
@@ -133,17 +127,25 @@ public class Gun : MonoBehaviour {
     {
         canShoot = false;
         currentAmmoLoaded--;
-        fireGun.Play();
+
+        Camera.main.transform.GetChild(0).GetComponent<GunAnim>().Shoot();
+
         //b.transform.LookAt(Camera.main.transform);
         bulletIndicator.text = currentAmmoLoaded.ToString() + "/" + currentAmmo.ToString();
         
-        GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
+        //GameObject b = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
         if (Physics.Raycast(spawnBullet.transform.position, Camera.main.transform.forward, out hit, range))
         { 
           if (hit.collider.tag == "Enemy")
             {
                 hit.collider.gameObject.GetComponent<Enemy>().currentHealth -= damage;
+                Instantiate(Spark, hit.point, Quaternion.identity);
                 //b.GetComponent<Bullet>().dir = (hit.point - transform.position).normalized;
+            }
+            else if(hit.collider.tag == "EnemyGround")
+            {
+                hit.collider.gameObject.GetComponent<GroundEnemy>().currentHealth -= damage;
+                Instantiate(Spark, hit.point, Quaternion.identity);
             }
             else if (hit.collider.tag == "Wall" || hit.collider.tag == "floor")
             {
@@ -176,5 +178,15 @@ public class Gun : MonoBehaviour {
     {
         currentAmmo += amount;
         UpdateUI();
+    }
+
+    public void MaxAmmo()
+    {
+        currentAmmoLoaded = maxAmmoLoaded;
+    }
+
+    public void SetDamage(float amount)
+    {
+        damage = amount;
     }
 }

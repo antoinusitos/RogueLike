@@ -28,12 +28,23 @@ public class DeplacementPlayer : MonoBehaviour
     void Update()
     {
         CharacterController controller = GetComponent<CharacterController>();
+        if(controller == null)
+        {
+            gameObject.AddComponent<CharacterController>();
+            controller = GetComponent<CharacterController>();
+        }
         if (controller.isGrounded && GetComponent<Player>().GetState() == Player.State.alive)
         {   
             if (Input.GetButton("Sprint") && stamina > 0)
             {
                 RemoveStamina();
+                Camera.main.transform.GetChild(0).GetComponent<GunAnim>().ChangeState(GunAnim.state.sprint);
                 multiply = 1.5f;
+            }
+            else if (Input.GetButton("Sprint"))
+            {
+                Camera.main.transform.GetChild(0).GetComponent<GunAnim>().ChangeState(GunAnim.state.walk);
+                multiply = 1.0f;
             }
             else
             {
@@ -42,6 +53,10 @@ public class DeplacementPlayer : MonoBehaviour
             }
 
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            if(moveDirection == Vector3.zero)
+                Camera.main.transform.GetChild(0).GetComponent<GunAnim>().ChangeState(GunAnim.state.idle);
+            else if(multiply == 1.0f)
+                Camera.main.transform.GetChild(0).GetComponent<GunAnim>().ChangeState(GunAnim.state.walk);
             moveDirection = transform.TransformDirection(moveDirection);
             moveDirection *= speed * multiply;
 
@@ -62,6 +77,7 @@ public class DeplacementPlayer : MonoBehaviour
         }
         else if (GetComponent<Player>().GetState() == Player.State.menu)
         {
+            Camera.main.transform.GetChild(0).GetComponent<GunAnim>().ChangeState(GunAnim.state.idle);
             AddStamina();
             multiply = 1.0f;
             moveDirection = new Vector3(0, 0, 0);
@@ -81,6 +97,16 @@ public class DeplacementPlayer : MonoBehaviour
             stamina = staminaMax;
         }
         RefreshUI();
+    }
+
+    public void SetStaminaMax(float amount)
+    {
+        staminaMax = amount;
+    }
+
+    public void SetStamina(float amount)
+    {
+        stamina = amount;
     }
 
     void RemoveStamina(float amount = 0)

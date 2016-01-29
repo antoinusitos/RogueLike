@@ -117,7 +117,7 @@ public class UpgradeManager : MonoBehaviour {
     {
         Upgrade retour = null;
         int level = GameManager.GetInstance().player.GetComponent<StatPlayer>().level;
-        int levelMax = level + addLevelMax;
+        //int levelMax = level + addLevelMax;
         int rand = -1;
         int tries = 0;
         int triesMax = 20;

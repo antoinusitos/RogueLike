@@ -11,7 +11,6 @@ public class StatPlayer : MonoBehaviour {
     public int LevelDamage = 0;
     public int LevelCadence = 0;
     public int LevelReload = 0;
-    public int LevelAim = 0;
     public int LevelAmmo = 0;
 
     public int LevelStamina = 0;
@@ -33,7 +32,6 @@ public class StatPlayer : MonoBehaviour {
         LevelDamage = 0;
         LevelCadence = 0;
         LevelReload = 0;
-        LevelAim = 0;
         LevelAmmo = 0;
 
         LevelStamina = 0;
@@ -108,17 +106,65 @@ public class StatPlayer : MonoBehaviour {
     {
         LevelReload++;
         GetComponent<Player>().gun.GetComponent<Gun>().reloadTime -= upgradeReload;
+        if (GetComponent<Player>().gun.GetComponent<Gun>().reloadTime < 0)
+            GetComponent<Player>().gun.GetComponent<Gun>().reloadTime = 0;
     }
 
     public void AddStatCadence()
     {
         LevelCadence++;
         GetComponent<Player>().gun.GetComponent<Gun>().fireRate -= upgradeCadence;
+        if (GetComponent<Player>().gun.GetComponent<Gun>().fireRate < 0)
+            GetComponent<Player>().gun.GetComponent<Gun>().fireRate = 0;
     }
 
     public void AddStatAmmo()
     {
         LevelAmmo++;
         GetComponent<Player>().gun.GetComponent<Gun>().maxAmmoLoaded += upgradeAmmo;
+    }
+
+    public void Load(int TheLevelReload, int TheLevelCadence, int TheLevelAmmo, int TheLevel, int TheMoney,
+        float TheExperienceNextLevel, float TheExperience, int TheLevelDamage, int TheLevelLife, int TheMaxLife, 
+        float TheStaminaMax, float TheDamage)
+    {
+        LevelDamage = TheLevelDamage;
+        LevelReload = TheLevelReload;
+        LevelStamina = TheLevelReload;
+        LevelCadence = TheLevelCadence;
+        LevelAmmo = TheLevelAmmo;
+        LevelLife = TheLevelLife;
+
+        for (int i = 0; i < TheLevelReload; ++i)
+        {
+            GetComponent<Player>().gun.GetComponent<Gun>().reloadTime -= upgradeReload;
+            if (GetComponent<Player>().gun.GetComponent<Gun>().reloadTime < 0)
+                GetComponent<Player>().gun.GetComponent<Gun>().reloadTime = 0;
+        }
+        for (int j = 0; j < TheLevelCadence; ++j)
+        {
+            GetComponent<Player>().gun.GetComponent<Gun>().fireRate -= upgradeCadence;
+            if (GetComponent<Player>().gun.GetComponent<Gun>().fireRate < 0)
+                GetComponent<Player>().gun.GetComponent<Gun>().fireRate = 0;
+        }
+        for (int k = 0; k < TheLevelAmmo; ++k)
+        {
+            GetComponent<Player>().gun.GetComponent<Gun>().maxAmmoLoaded += upgradeAmmo;
+        }
+
+        GetComponent<Player>().gun.GetComponent<Gun>().MaxAmmo();
+
+        level = TheLevel;
+        money = TheMoney;
+        experienceToNextLevel = TheExperienceNextLevel;
+        experience = TheExperience;
+
+        GetComponent<Player>().SetMaxLife(TheMaxLife);
+        GetComponent<Player>().SetLife(TheMaxLife);
+
+        GetComponent<DeplacementPlayer>().SetStaminaMax(TheStaminaMax);
+        GetComponent<DeplacementPlayer>().SetStamina(TheStaminaMax);
+
+        GetComponent<Player>().gun.GetComponent<Gun>().SetDamage(TheDamage);
     }
 }

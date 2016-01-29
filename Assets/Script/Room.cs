@@ -24,6 +24,8 @@ public class Room : MonoBehaviour {
     int corridorLarge = 7;
     public GameObject prefabCase;
 
+    public GameObject plant;
+
     public List<int> directions;
 
 	public GameObject ShopPrefab;
@@ -158,8 +160,16 @@ public class Room : MonoBehaviour {
             {
                 tab[index] = room[x, y];
                 index++;
+                float rand = Random.Range(0, 1.0f);
+                if (rand < 0.1f)
+                {
+                    GameObject go = (GameObject)Instantiate(plant, room[x, y].transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+                    go.transform.parent = GameObject.Find("AllPlants").transform;
+                }  
             }
         }
+
+
 
         
         if(!isImportant)
